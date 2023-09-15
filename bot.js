@@ -1753,7 +1753,7 @@ case 'githubstalk': {
       return m.reply(`❌ GitHub user not found.`);
     }
 
-    // Construct the response message
+    // Construct the response message with user data
     let responseMessage = `🌟 *GitHub Profile - @${userData.login}*\n\n`;
     responseMessage += `  ◦  *Name*: ${userData.name || 'N/A'}\n`;
     responseMessage += `  ◦  *Username*: @${userData.login}\n`;
@@ -1774,9 +1774,10 @@ case 'githubstalk': {
     responseMessage += `  ◦  *Following*: ${userData.following}\n`;
     responseMessage += `  ◦  *Created At*: ${userData.created_at}\n`;
     responseMessage += `  ◦  *Updated At*: ${userData.updated_at}\n`;
+    // Include other user data fields here as needed...
 
-   
- const githubReposData = await fetch(`https://api.github.com/users/${username}/repos?per_page=5&sort=stargazers_count&direction=desc`);
+    // Fetch top starred repositories
+    const githubReposData = await fetch(`https://api.github.com/users/${username}/repos?per_page=5&sort=stargazers_count&direction=desc`);
     const reposData = await githubReposData.json();
 
     if (reposData.length > 0) {
