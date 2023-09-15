@@ -1796,7 +1796,7 @@ case 'githubstalk': {
     }
 
     // Send the message with the updated caption and user's avatar
-    await client.sendMessage(m.chat, { image: { url: userData.avatar_url }, caption: responseMessage }, { quoted: m });
+    await client.sendMessage(m.chat, { image: { url: userData.avatar_url },  responseMessage }, { quoted: m });
 
     // Add a success reaction message
     const successReactionMessage = {
