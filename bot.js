@@ -1756,7 +1756,7 @@ case 'githubstalk': {
     // Construct the response message with user data
     let responseMessage = `🌟 *GitHub Profile - @${userData.login}*\n\n`;
     responseMessage += `  ◦  *Name*: ${userData.name || 'N/A'}\n`;
-    responseMessage += `  ◦  *Username*: @${userData.login}\n`;
+    responseMessage += `  ◦  *Username*: @${userData.login}\n`; // Include username here
     responseMessage += `  ◦  *Bio*: ${userData.bio || 'N/A'}\n`;
     responseMessage += `  ◦  *ID*: ${userData.id}\n`;
     responseMessage += `  ◦  *Node ID*: ${userData.node_id}\n`;
@@ -1774,7 +1774,6 @@ case 'githubstalk': {
     responseMessage += `  ◦  *Following*: ${userData.following}\n`;
     responseMessage += `  ◦  *Created At*: ${userData.created_at}\n`;
     responseMessage += `  ◦  *Updated At*: ${userData.updated_at}\n`;
-    // Include other user data fields here as needed...
 
     // Fetch top starred repositories
     const githubReposData = await fetch(`https://api.github.com/users/${username}/repos?per_page=5&sort=stargazers_count&direction=desc`);
@@ -1816,6 +1815,7 @@ case 'githubstalk': {
   }
   break;
 }
+
 
 case 'tagall':
     // Fetch group metadata
