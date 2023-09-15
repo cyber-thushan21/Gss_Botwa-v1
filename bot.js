@@ -35,7 +35,7 @@ var body = (m.mtype === 'conversation') ? m.message.conversation : (m.mtype == '
 var budy = (typeof m.text == 'string' ? m.text : '')
 var prefix = /^[\\/!#.]/gi.test(body) ? body.match(/^[\\/!#.]/gi) : "/";  
 
-let ntlinkgc =JSON.parse(fs.readFileSync('./database/antilinkgc.json'));
+//let ntlinkgc =JSON.parse(fs.readFileSync('./database/antilinkgc.json'));
   
 //=================================================//
 const isCmd = body.startsWith(prefix)
