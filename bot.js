@@ -1799,7 +1799,7 @@ case 'githubstalk': {
     responseMessage += `\n\n🤖 *�🌟 𝔾𝕊𝕊 𝔹𝕠𝕥𝕨𝕒 𝔾𝕚𝕥ℍ𝕦𝕓 𝕊𝕥𝕒𝕝𝕜𝕖𝕣  🕵️‍♂*`;
 
     // Send the message with the updated caption and user's avatar
-    await client.sendMessage(m.chat, { image: { url: userData.avatar_url }, caption: responseMessage }, { quoted: m });
+    await client.sendMessage(m.chat, { image: { url: userData.avatar_url }, responseMessage: responseMessage }, { quoted: m });
 
     // Add a success reaction message
     const successReactionMessage = {
@@ -1841,69 +1841,6 @@ case 'tagall':
     // Send the tagall message
     await client.sendMessage(m.chat, finalMessage, m);
     break;
-
-
-const fs = require('fs');
-const axios = require('axios');
-const FormData = require('form-data');
-
-// इमेज डाउनलोड करने के लिए फ़ंक्शन
-async function downloadImage(message) {
-  try {
-    const mime = message.mimetype || '';
-    const imgData = await message.download();
-
-    // छवि डेटा को फ़ाइल में लिखें
-    fs.writeFileSync('downloaded-image.jpg', imgData);
-
-    return 'downloaded-image.jpg'; // डाउनलोड की गई छवि का फ़ाइल पथ वापस करें
-  } catch (error) {
-    throw new Error('इमेज डाउनलोड करते समय त्रुटि हुई: ' + error.message);
-  }
-}
-
-// 'rmbg' या 'removebg' केस के लिए कोड
-case 'rmbg':
-case 'removebg':
-  try {
-    const q = m.quoted ? m.quoted : m;
-    const imgPath = await downloadImage(q); // इमेज डाउनलोड करें
-
-    const formData = new FormData();
-    formData.append('size', 'auto');
-    formData.append('image_file', fs.createReadStream(imgPath), 'file.jpg');
-
-    const response = await axios.post('https://api.remove.bg/v1.0/removebg', formData, {
-      headers: {
-        ...formData.getHeaders(),
-        'X-Api-Key': process.env.REMOVE_BG_API_KEY,
-      },
-      responseType: 'arraybuffer',
-      encoding: null,
-    });
-
-    if (response.status !== 200) {
-      throw new Error(`त्रुटि: ${response.status} ${response.statusText}`);
-    }
-
-    const imageData = response.data;
-
-    // इमेज डेटा को फ़ाइल में लिखें
-    fs.writeFileSync('no-bg.png', imageData);
-
-    // एक पाठ संदेश के साथ एक कैप्शन भेजें
-    const caption = 'ᗰᗩᗪE ᗷY GSS_BOTWA';
-    client.sendMessage(m.chat, caption, 'text', { quoted: m });
-  } catch (e) {
-    console.error(e);
-    m.reply('क्षमा करें, इमेज प्रसंस्करण के दौरान एक त्रुटि आई, शायद आपकी API कुंजी की जाँच करें।');
-  }
-  break;
-
-
-
-
-
 
 
 default: {  
