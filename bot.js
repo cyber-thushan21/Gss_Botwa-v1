@@ -4,8 +4,8 @@ require("dotenv").config();
   const moment = require("moment-timezone"); 
   //const fetch = require("node-fetch"); 
   const axios = require("axios"); 
-  const { BufferJSON, WA_DEFAULT_EPHEMERAL, generateWAMessageFromContent, proto, generateWAMessageContent, generateWAMessage, prepareWAMessageMedia,  areJidsSameUser, getContentType, downloadMediaMessage } = require("@adiwajshing/baileys");  
-  const fs = require("fs");  
+  const { BufferJSON, WA_DEFAULT_EPHEMERAL,MessageType, Mimetype, generateWAMessageFromContent, proto, generateWAMessageContent, generateWAMessage, prepareWAMessageMedia,  areJidsSameUser, getContentType, downloadMediaMessage } = require("@adiwajshing/baileys");  
+  const fs = require("fs");
   const util = require("util");  
   const chalk = require("chalk");  
   const googleTTS = require("google-tts-api");
@@ -15,19 +15,14 @@ require("dotenv").config();
   const pm2 = require('pm2');
   const chokidar = require('chokidar');
   const eco = require('discord-mongoose-economy');
-  //const ty =  eco.connect('mongodb+srv://rajuji:8jJOF9xIbf4F71U6@cluster0.ojdxgnu.mongodb.net/?retryWrites=true&w=majority');
   const mongoDB = require("./lib/mongoDB");
-  const ytdl = require("@distube/ytdl-core");
+  const ytdl = require('ytdl-core');
   const ytsr = require('ytsr');
-//  const translate = require('translate-google');
   const vm = require('node:vm');
   const translate = require('translate-google-api');
   const os = require('os');
   const ffmpeg = require('fluent-ffmpeg');
-// Your code using fetch here
-  const { MessageType, Mimetype } = require('@adiwajshing/baileys');
-
-   const crypto = require('crypto');
+  const crypto = require('crypto');
   
   module.exports = client = async (client, m, chatUpdate, store) => {  
     try {  
