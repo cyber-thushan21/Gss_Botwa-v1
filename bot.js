@@ -1799,7 +1799,7 @@ case 'githubstalk': {
     responseMessage += `\n\n🤖 *�🌟 𝔾𝕊𝕊 𝔹𝕠𝕥𝕨𝕒 𝔾𝕚𝕥ℍ𝕦𝕓 𝕊𝕥𝕒𝕝𝕜𝕖𝕣  🕵️‍♂*`;
 
     // Send the message with the updated caption and user's avatar
-    await client.sendMessage(m.chat, { image: { url: userData.avatar_url }, responseMessage: responseMessage }, { quoted: m });
+    await client.sendMessage(m.chat, { image: { url: userData.avatar_url }, text: responseMessage }, { quoted: m });
 
     // Add a success reaction message
     const successReactionMessage = {
