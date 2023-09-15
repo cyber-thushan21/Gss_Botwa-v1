@@ -62,7 +62,7 @@ const sender = m.isGroup ? (m.key.participant ? m.key.participant : m.participan
 //const isAdmins = m.isGroup ? groupAdmins.includes(m.sender) : false
 //const welcmm = m.isGroup ? wlcmm.includes(from) : false 
 //const AntiLink = m.isGroup ? ntilink.includes(from) : false 
-const Antilinkgc = m.isGroup ? ntlinkgc.includes(m.chat) : false
+//const Antilinkgc = m.isGroup ? ntlinkgc.includes(m.chat) : false
 //const isBan = banned.includes(m.sender)
 const content = JSON.stringify(m.message)
 const numberQuery = text.replace(new RegExp("[()+-/ +/]", "gi"), "") + "@s.whatsapp.net"
@@ -177,47 +177,6 @@ if (process.env.ALWAYS_ONLINE || 'false' === 'false') {
 else {
   client.sendPresenceUpdate('unavailable', m.chat)
 }
-
-      // Group  
-     const groupMetadata = m.isGroup ? await client.groupMetadata(m.chat).catch((e) => {}) : "";  
-     const groupName = m.isGroup ? groupMetadata.subject : "";  
-  
-      // Push Message To Console  
-      let argsLog = budy.length > 30 ? `${q.substring(0, 30)}...` : budy;  
-  
-      if (isCmd && !m.isGroup) {  
-        console.log(chalk.black(chalk.bgWhite("[ LOGS ]")), color(argsLog, "turquoise"), chalk.magenta("From"), chalk.green(pushname), chalk.yellow(`[ ${m.sender.replace("@s.whatsapp.net", "")} ]`));  
-      } else if (isCmd && m.isGroup) {  
-        console.log(  
-          chalk.black(chalk.bgWhite("[ LOGS ]")),  
-          color(argsLog, "turquoise"),  
-          chalk.magenta("From"),  
-          chalk.green(pushname),  
-          chalk.yellow(`[ ${m.sender.replace("@s.whatsapp.net", "")} ]`),  
-          chalk.blueBright("IN"),  
-          chalk.green(groupName)  
-        );  
-      }  
-
-        if (Antilinkgc) {
-        if (budy.match(`chat.whatsapp.com`)) {
-        let gclink = (`https://chat.whatsapp.com/`+await client.groupInviteCode(m.chat))
-        let isLinkThisGc = new RegExp(gclink, 'i')
-        let isgclink = isLinkThisGc.test(m.text)
-        kice = m.sender
-        await client.sendMessage(m.chat,
-			    {
-			        delete: {
-			            remoteJid: m.chat,
-			            fromMe: false,
-			            id: m.key.id,
-			            participant: m.key.participant
-			        }
-			    })
-			client.groupParticipantsUpdate(m.chat, [m.sender], 'remove')
-			client.sendMessage(from, {text:`\`\`\`「 Group Link Detected 」\`\`\`\n\n@${kice.split("@")[0]} Has been kicked because of sending group link in this group`, contextInfo:{mentionedJid:[kice]}}, {quoted:m})
-            }            
-        }
         
       if (isCmd) {  
         switch (command) {  
