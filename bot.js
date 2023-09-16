@@ -511,7 +511,7 @@ case 'fb': {
       audio: {
         url: `${tmpDir}/${title}.mp3`,
       },
-     /* mimetype: 'audio/mp4',
+      mimetype: 'audio/mp4',
       fileName: `${title}`,
       contextInfo: {
         externalAdReply: {
@@ -524,7 +524,7 @@ case 'fb': {
           sourceUrl: url,
         },
       },
-    };*/
+    };
 
     await client.sendMessage(m.chat, doc, { quoted: m });
 
