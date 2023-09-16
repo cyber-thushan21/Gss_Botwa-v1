@@ -522,7 +522,6 @@ case 'ytdl':
             title: title,
             body: wm,
             sourceUrl: url,
-            thumbnail: await (await client.sendMessage(thumbnail)).data,
           },
         },
       };
