@@ -474,7 +474,7 @@ case 'fb': {
     break;
 }
 case 'ytdl':
-  if (!text) throw `Use example ${prefix + command} naruto blue bird`;
+  if (!text) throw `Use example ${prefix + command} man meri jan`;
 
   let search = await yts(text);
   if (!search.videos || search.videos.length === 0) {
