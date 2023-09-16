@@ -405,6 +405,16 @@ setInterval(setBio, 60000);
       return err;
     }
   };
+  
+client.getFile = async (jid, fileId) => {
+  try {
+    const fileContent = await downloadFile(fileId);
+    return fileContent;
+  } catch (error) {
+    console.error("Error fetching file:", error);
+    throw error;
+  }
+};
 
   client.sendImage = async (jid, path, caption = "", quoted = "", options) => {
     let buffer = Buffer.isBuffer(path)
