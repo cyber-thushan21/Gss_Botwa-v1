@@ -23,7 +23,7 @@ require("dotenv").config();
   const os = require('os');
   const ffmpeg = require('fluent-ffmpeg');
   const crypto = require('crypto');
-  
+  const fg = require('api-dylux');
   module.exports = client = async (client, m, chatUpdate, store) => {  
     try {  
 var body = (m.mtype === 'conversation') ? m.message.conversation : (m.mtype == 'imageMessage') ? m.message.imageMessage.caption : (m.mtype == 'videoMessage') ? m.message.videoMessage.caption : (m.mtype == 'extendedTextMessage') ? m.message.extendedTextMessage.text : (m.mtype === 'messageContextInfo') ? (m.text) : ''
@@ -413,7 +413,50 @@ case 'ytsearch': {
     break;
 }
 
+case 'fb': {
+    if (!args[0]) {
+        throw `✳️ Please send the link of a Facebook video\n\n📌 EXAMPLE :\n*${prefix + command} * https://www.facebook.com/Ankursajiyaan/videos/981948876160874/?mibextid=rS40aB7S9Ucbxw6v`;
+    }
 
+    const urlRegex = /^(?:https?:\/\/)?(?:www\.)?(?:facebook\.com|fb\.watch)\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/i;
+    if (!urlRegex.test(args[0])) {
+        throw '⚠️ PLEASE GIVE A VALID URL.';
+    }
+
+    try {
+        const result = await fg.fbdl(args[0]);
+        const tex = `
+⊱ ─── {* GURU FBDL*} ─── ⊰
+↳ *VIDEO TITLE:* ${result.title}
+⊱ ────── {⋆♬⋆} ────── ⊰`;
+
+        const response = await fetch(result.videoUrl);
+        const arrayBuffer = await response.arrayBuffer();
+        const videoBuffer = Buffer.from(arrayBuffer);
+
+        // Save the videoBuffer to a temporary file
+        const randomName = `temp_${Math.floor(Math.random() * 10000)}.mp4`;
+        fs.writeFileSync(`./${randomName}`, videoBuffer);
+
+        // Send the video using client.sendMessage
+        await client.sendMessage(
+            m.chat,
+            {
+                video: fs.readFileSync(`./${randomName}`),
+                caption: tex,
+            },
+            { quoted: m }
+        );
+
+        // Delete the temporary file
+        fs.unlinkSync(`./${randomName}`);
+    } catch (error) {
+        console.log(error);
+        m.reply('⚠️ An error occurred while processing the request. Please try again later.');
+    }
+
+    break;
+}
 case 'ping': {
   const reactionMessage = {
             react: {
