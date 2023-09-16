@@ -474,21 +474,15 @@ case 'fb': {
 
     break;
 }
-case 'song':
-  if (!text) throw `Use example ${prefix + command} man meri jan`;
+  case 'song':
+    if (!text) throw `Use example ${Prefix$ command} naruto blue bird`;
+    let search = await yts(text);
+    let vid = search.videos[Math.floor(Math.random() * search.videos.length)];
+    if (!search) throw 'Video Not Found, Try Another Title';
+    let { title, thumbnail, timestamp, views, ago, url } = vid;
+    let wm = 'Downloading audio please wait';
 
-  let search = await yts(text);
-  if (!search.videos || search.videos.length === 0) {
-    throw 'No videos found for the given search query';
-  }
-
-  let vid = search.videos[Math.floor(Math.random() * search.videos.length)];
-  if (!vid) throw 'Video Not Found, Try Another Title';
-  let videoUrl = vid.url;
-  let { title, thumbnail, timestamp, views, ago, url } = vid;
-  let wm = 'Downloading audio please wait';
-
-  let captvid = `✼ ••๑⋯ ❀ Y O U T U B E ❀ ⋯⋅๑•• ✼
+    let captvid = `✼ ••๑⋯ ❀ Y O U T U B E ❀ ⋯⋅๑•• ✼
     ❏ Title: ${title}
     ❐ Duration: ${timestamp}
     ❑ Views: ${views}
@@ -496,56 +490,52 @@ case 'song':
     ❒ Link: ${url}
     ⊱─━━━━⊱༻●༺⊰━━━━─⊰`;
 
-  if (!thumbnail) {
-    throw 'Thumbnail is undefined or empty.';
-  }
+    client.sendMessage(m.chat, { image: { url: thumbnail }, caption: captvid, footer: author }, { quoted: m });
 
-  // Ensure thumbnail is a valid path before using client.getFile
-  const thumbnailData = await client.getFile(thumbnail);
+    const audioStream = ytdl(url, {
+      filter: 'audioonly',
+      quality: 'highestaudio',
+    });
 
-  client.sendMessage(m.chat, { image: { url: thumbnail }, caption: captvid, footer: 'Author' }, { quoted: m });
+    // Get the path to the system's temporary directory
+    const tmpDir = os.tmpdir();
 
-  const audioStream = ytdl(videoUrl, {
-    filter: 'audioonly',
-    quality: 'highestaudio',
-  });
+    // Create writable stream in the temporary directory
+    const writableStream = fs.createWriteStream(`${tmpDir}/${title}.mp3`);
 
-  const tmpDir = os.tmpdir();
-  const tmpFilePath = `${tmpDir}/${title}.mp3`;
+    // Start the download
+    await streamPipeline(audioStream, writableStream);
 
-  const writableStream = fs.createWriteStream(tmpFilePath);
-
-  await streamPipeline(audioStream, writableStream);
-
-  let doc = {
-    audio: {
-      url: tmpFilePath,
-    },
-    mimetype: 'audio/mp4',
-    fileName: `${title}`,
-    contextInfo: {
-      externalAdReply: {
-        showAdAttribution: true,
-        mediaType: 2,
-        mediaUrl: url,
-        title: title,
-        body: wm,
-        sourceUrl: url,
+    let doc = {
+      audio: {
+        url: `${tmpDir}/${title}.mp3`
       },
-    },
-  };
+      mimetype: 'audio/mp4',
+      fileName: `${title}`,
+      contextInfo: {
+        externalAdReply: {
+          showAdAttribution: true,
+          mediaType: 2,
+          mediaUrl: url,
+          title: title,
+          body: wm,
+          sourceUrl: url,
+          thumbnail: await (await client.getFile(thumbnail)).data
+        }
+      }
+    };
 
-  client.sendMessage(m.chat, doc, { quoted: m });
+    await client.sendMessage(m.chat, doc, { quoted: m });
 
-  // Delete the temporary audio file
-  fs.unlink(tmpFilePath, (err) => {
-    if (err) {
-      console.error(`Failed to delete audio file: ${err}`);
-    } else {
-      console.log(`Deleted audio file: ${tmpFilePath}`);
-    }
-  });
-  break;
+    // Delete the audio file
+    fs.unlink(`${tmpDir}/${title}.mp3`, (err) => {
+      if (err) {
+        console.error(`Failed to delete audio file: ${err}`);
+      } else {
+        console.log(`Deleted audio file: ${tmpDir}/${title}.mp3`);
+      }
+    });
+    break;
 
 
 
