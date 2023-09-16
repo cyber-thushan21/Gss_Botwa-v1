@@ -503,38 +503,42 @@ case 'ytdl':
         quality: 'highestaudio',
       });
 
-      const tmpDir = os.tmpdir();
-      const writableStream = fs.createWriteStream(`${tmpDir}/${title}.mp3`);
+   // Audio download code
+// ...
 
-      await streamPipeline(audioStream, writableStream);
+const tmpDir = os.tmpdir();
+const tmpFilePath = `${tmpDir}/${title}.mp3`;
 
-      let doc = {
-        audio: {
-          url: `${tmpDir}/${title}.mp3`,
-        },
-        mimetype: 'audio/mp4',
-        fileName: `${title}`,
-        contextInfo: {
-          externalAdReply: {
-            showAdAttribution: true,
-            mediaType: 2,
-            mediaUrl: url,
-            title: title,
-            body: wm,
-            sourceUrl: url,
-          },
-        },
-      };
+const doc = {
+  audio: {
+    url: tmpFilePath,
+  },
+  mimetype: 'audio/mp4',
+  fileName: title,
+  contextInfo: {
+    externalAdReply: {
+      showAdAttribution: true,
+      mediaType: 2,
+      mediaUrl: url,
+      title: title,
+      body: wm,
+      sourceUrl: url,
+    },
+  },
+};
 
-      await client.sendMessage(m.chat, doc, { quoted: m });
+// Send the message with the audio file
+await client.sendMessage(m.chat, doc, { quoted: m });
 
-      fs.unlink(`${tmpDir}/${title}.mp3`, (err) => {
-        if (err) {
-          console.error(`Failed to delete audio file: ${err}`);
-        } else {
-          console.log(`Deleted audio file: ${tmpDir}/${title}.mp3`);
-        }
-      });
+// Delete the audio file after sending
+fs.unlink(tmpFilePath, (err) => {
+  if (err) {
+    console.error(`Failed to delete audio file: ${err}`);
+  } else {
+    console.log(`Deleted audio file: ${tmpFilePath}`);
+  }
+});
+
       break;
 
 
