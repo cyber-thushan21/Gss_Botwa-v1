@@ -19,7 +19,8 @@ require("dotenv").config();
   const mongoDB = require("./lib/mongoDB");
   const ytdl = require("@distube/ytdl-core");
   
-  const ytsr = require('yt-search');
+  const yts = require('yt-search');
+  const ytsr = require('ytsr');
 //  const translate = require('translate-google');
   const vm = require('node:vm');
   const translate = require('translate-google-api');
