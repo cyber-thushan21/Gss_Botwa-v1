@@ -649,7 +649,13 @@ case 'apk': case 'yts': case 'sticker':
   m.reply("This feature is Comming Soon");
 break;
 
-
+case 'readmore': {
+  let [l, r] = text.split("|")
+  if (!l) l = ''
+  if (!r) r = ''
+  m.reply(m.chat, l + " [Read More]\n\n" + r, m)
+  break;
+}
   
 
 const languages = require('./lib/languages'); // Import the language codes module
