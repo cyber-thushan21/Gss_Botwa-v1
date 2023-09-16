@@ -521,7 +521,7 @@ case 'song':
             mediaUrl: url,
             title: title,
             body: wm,
-            thumbnail: await (await client.getFile(thumbnail)).data,
+           // thumbnail: await (await client.getFile(thumbnail)).data,
             sourceUrl: url,
           },
         },
