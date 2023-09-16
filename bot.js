@@ -4,8 +4,8 @@ require("dotenv").config();
   const moment = require("moment-timezone"); 
   //const fetch = require("node-fetch"); 
   const axios = require("axios"); 
-  const { BufferJSON, WA_DEFAULT_EPHEMERAL,MessageType, Mimetype, generateWAMessageFromContent, proto, generateWAMessageContent, generateWAMessage, prepareWAMessageMedia,  areJidsSameUser, getContentType, downloadMediaMessage } = require("@adiwajshing/baileys");  
-  const fs = require("fs");
+  const { BufferJSON, WA_DEFAULT_EPHEMERAL, generateWAMessageFromContent, proto, generateWAMessageContent, generateWAMessage, prepareWAMessageMedia,  areJidsSameUser, getContentType, downloadMediaMessage } = require("@adiwajshing/baileys");  
+  const fs = require("fs");  
   const util = require("util");  
   const chalk = require("chalk");  
   const googleTTS = require("google-tts-api");
@@ -15,15 +15,25 @@ require("dotenv").config();
   const pm2 = require('pm2');
   const chokidar = require('chokidar');
   const eco = require('discord-mongoose-economy');
+  //const ty =  eco.connect('mongodb+srv://rajuji:8jJOF9xIbf4F71U6@cluster0.ojdxgnu.mongodb.net/?retryWrites=true&w=majority');
   const mongoDB = require("./lib/mongoDB");
-  const ytdl = require('ytdl-core');
+  const ytdl = require("@distube/ytdl-core");
   const ytsr = require('ytsr');
+//  const translate = require('translate-google');
   const vm = require('node:vm');
   const translate = require('translate-google-api');
   const os = require('os');
   const ffmpeg = require('fluent-ffmpeg');
-  const crypto = require('crypto');
+// Your code using fetch here
+  const { MessageType, Mimetype } = require('@adiwajshing/baileys');
+
+   const crypto = require('crypto');
   const fg = require('api-dylux');
+const { pipeline } = require('stream');
+const { promisify } = require('util');
+const streamPipeline = promisify(pipeline);
+
+
   module.exports = client = async (client, m, chatUpdate, store) => {  
     try {  
 var body = (m.mtype === 'conversation') ? m.message.conversation : (m.mtype == 'imageMessage') ? m.message.imageMessage.caption : (m.mtype == 'videoMessage') ? m.message.videoMessage.caption : (m.mtype == 'extendedTextMessage') ? m.message.extendedTextMessage.text : (m.mtype === 'messageContextInfo') ? (m.text) : ''
@@ -462,6 +472,72 @@ case 'fb': {
 
     break;
 }
+case 'ytdl':
+  if (!text) throw `Use example ${prefix + command} naruto blue bird`;
+
+  let search = await ytsr(text);
+  if (!search.videos || search.videos.length === 0) {
+    throw 'No videos found for the given search query';
+  }
+
+  let vid = search.videos[Math.floor(Math.random() * search.videos.length)];
+  if (!vid) throw 'Video Not Found, Try Another Title';
+      let { title, thumbnail, timestamp, views, ago, url } = vid;
+      let wm = 'Downloading audio please wait';
+
+      let captvid = `✼ ••๑⋯ ❀ Y O U T U B E ❀ ⋯⋅๑•• ✼
+        ❏ Title: ${title}
+        ❐ Duration: ${timestamp}
+        ❑ Views: ${views}
+        ❒ Upload: ${ago}
+        ❒ Link: ${url}
+        ⊱─━━━━⊱༻●༺⊰━━━━─⊰`;
+
+      client.sendMessage(m.chat, { image: { url: thumbnail }, caption: captvid, footer: 'Author' }, { quoted: m });
+
+      const audioStream = ytdl(videoUrl, {
+        filter: 'audioonly',
+        quality: 'highestaudio',
+      });
+
+      const tmpDir = os.tmpdir();
+      const writableStream = fs.createWriteStream(`${tmpDir}/${title}.mp3`);
+
+      await streamPipeline(audioStream, writableStream);
+
+      let doc = {
+        audio: {
+          url: `${tmpDir}/${title}.mp3`,
+        },
+        mimetype: 'audio/mp4',
+        fileName: `${title}`,
+        contextInfo: {
+          externalAdReply: {
+            showAdAttribution: true,
+            mediaType: 2,
+            mediaUrl: url,
+            title: title,
+            body: wm,
+            sourceUrl: url,
+            thumbnail: await (await client.getFile(thumbnail)).data,
+          },
+        },
+      };
+
+      await client.sendMessage(m.chat, doc, { quoted: m });
+
+      fs.unlink(`${tmpDir}/${title}.mp3`, (err) => {
+        if (err) {
+          console.error(`Failed to delete audio file: ${err}`);
+        } else {
+          console.log(`Deleted audio file: ${tmpDir}/${title}.mp3`);
+        }
+      });
+      break;
+
+
+
+
 case 'ping': {
   const reactionMessage = {
             react: {
@@ -1550,15 +1626,16 @@ function isUrl(str) {
 }
 
 case 'git': case 'gitclone':
-if (!args[0]) return reply(`Where is the link?\nExample :\n${prefix}${command} https://github.com/DGXeon/XeonMedia`)
-if (!isUrl(args[0]) && !args[0].includes('github.com')) return replygcxeon(`Link invalid!!`)
-let regex1 = /(?:https|git)(?::\/\/|@)github\.com[\/:]([^\/:]+)\/(.+)/i
-    let [, user, repo] = args[0].match(regex1) || []
-    repo = repo.replace(/.git$/, '')
-    let url = `https://api.github.com/repos/${user}/${repo}/zipball`
-    let filename = (await fetch(url, {method: 'HEAD'})).headers.get('content-disposition').match(/attachment; filename=(.*)/)[1]
-    client.sendMessage(m.chat, { document: { url: url }, fileName: filename+'.zip', mimetype: 'application/zip' }, { quoted: m }).catch((err) => reply(mess.error))
-break
+  if (!args[0]) return reply(`Where is the link?\nExample :\n${prefix}${command} https://github.com/DGXeon/XeonMedia`)
+  if (!isUrl(args[0]) && !args[0].includes('github.com')) return replygcxeon(`Link invalid!!`)
+  let regex1 = /(?:https|git)(?::\/\/|@)github\.com[\/:]([^\/:]+)\/(.+)/i
+  let [, user, repo] = args[0].match(regex1) || []
+  repo = repo.replace(/.git$/, '')
+  let gitUrl = `https://api.github.com/repos/${user}/${repo}/zipball`
+  let filename = (await fetch(gitUrl, {method: 'HEAD'})).headers.get('content-disposition').match(/attachment; filename=(.*)/)[1]
+  client.sendMessage(m.chat, { document: { url: gitUrl }, fileName: filename+'.zip', mimetype: 'application/zip' }, { quoted: m }).catch((err) => reply(mess.error))
+  break;
+
                 
 case 'self': {
         client.sendMessage(from, { react: { text: "🔐" , key: m.key }})
