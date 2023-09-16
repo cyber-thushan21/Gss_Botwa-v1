@@ -426,9 +426,14 @@ case 'fb': {
     try {
         const result = await fg.fbdl(args[0]);
         const tex = `
-⊱ ─── {* GSS_FBDL*} ─── ⊰
-↳ *VIDEO TITLE:* ${result.title}
-⊱ ────── {⋆♬⋆} ────── ⊰`;
+🌟 *Video Details* 🌟
+📽️ *Title*: ${result.title}
+👍 *Likes*: ${result.likes}
+👎 *Dislikes*: ${result.dislikes}
+👁️ *Views*: ${result.views}
+📥 [Download](result.videoUrl)
+`;
+
 
         const response = await fetch(result.videoUrl);
         const arrayBuffer = await response.arrayBuffer();
