@@ -426,7 +426,7 @@ case 'fb': {
     try {
         const result = await fg.fbdl(args[0]);
         const tex = `
-⊱ ─── {* GURU FBDL*} ─── ⊰
+⊱ ─── {* GSS_FBDL*} ─── ⊰
 ↳ *VIDEO TITLE:* ${result.title}
 ⊱ ────── {⋆♬⋆} ────── ⊰`;
 
