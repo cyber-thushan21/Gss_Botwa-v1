@@ -490,7 +490,7 @@ case 'fb': {
     ❒ Link: ${url}
     ⊱─━━━━⊱༻●༺⊰━━━━─⊰`;
 
-    client.sendMessage(m.chat, { image: { url: thumbnail }, caption: captvid, footer: author }, { quoted: m });
+    client.sendMessage(m.chat, { image: { url: thumbnail }, caption: captvid, }, { quoted: m });
 
     const audioStream = ytdl(url, {
       filter: 'audioonly',
