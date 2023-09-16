@@ -515,6 +515,13 @@ case 'ytdl':
         mimetype: 'audio/mp4',
         fileName: `${title}`,
         contextInfo: {
+          externalAdReply: {
+            showAdAttribution: true,
+            mediaType: 2,
+            mediaUrl: url,
+            title: title,
+            body: wm,
+            sourceUrl: url,
           },
         },
       };
