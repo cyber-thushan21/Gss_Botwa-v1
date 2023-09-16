@@ -405,10 +405,13 @@ setInterval(setBio, 60000);
       return err;
     }
   };
-  
-client.getFile = async (jid, fileId) => {
+
+client.getFile = async (jid, filePath) => {
   try {
-    const fileContent = await downloadFile(fileId);
+    // Read the file from the local file system
+    const fileContent = fs.readFileSync(filePath);
+
+    // You can then return the file content or process it as needed.
     return fileContent;
   } catch (error) {
     console.error("Error fetching file:", error);
