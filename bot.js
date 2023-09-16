@@ -357,21 +357,25 @@ break
   
                 
 
-    case 'deleteall': case 'delall': case 'delete': case 'del': {
-client.sendMessage(from, { react: { text: "🫡" , key: m.key }})
+    case 'deleteall':
+case 'delall':
+case 'delete':
+case 'del': 
+    
+        if (!m.quoted) return reply('Please mention a message');
+        let { chat, id } = m.quoted;
 
-if (!m.quoted) return reply('Please mention a message')
-let { chat, fromMe, id} = m.quoted
+        const key = {
+            remoteJid: m.chat,
+            id: m.quoted.id,
+            participant: m.quoted.sender
+        };
 
-const key = {
- remoteJid: m.chat,
- fromMe: false,
- id: m.quoted.id,
- participant: m.quoted.sender
-}
-
-await client.sendMessage(m.chat, { delete: key })
-}
+        await client.sendMessage(m.chat, { delete: key });
+ //  } else {
+   //   reply('You are not authorized to use this command.');
+  //  }
+    break;
 break;
 case 'yts':
 case 'ytsearch': {
