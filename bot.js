@@ -476,13 +476,14 @@ case 'fb': {
 case 'ytdl':
   if (!text) throw `Use example ${prefix + command} naruto blue bird`;
 
-  let search = await ytsr(text);
+  let search = await yts(text);
   if (!search.videos || search.videos.length === 0) {
     throw 'No videos found for the given search query';
   }
 
   let vid = search.videos[Math.floor(Math.random() * search.videos.length)];
   if (!vid) throw 'Video Not Found, Try Another Title';
+  let videoUrl = vid.url;
       let { title, thumbnail, timestamp, views, ago, url } = vid;
       let wm = 'Downloading audio please wait';
 
