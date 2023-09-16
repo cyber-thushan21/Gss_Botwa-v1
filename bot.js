@@ -488,14 +488,13 @@ case 'song':
       let { title, thumbnail, timestamp, views, ago, url } = vid;
       let wm = 'Downloading audio please wait';
 
-      let captvid = `✼ ••๑⋯ ❀ Y O U T U B E ❀ ⋯⋅๑•• ✼
-        ❏ Title: ${title}
-        ❐ Duration: ${timestamp}
-        ❑ Views: ${views}
-        ❒ Upload: ${ago}
-        ❒ Link: ${url}
-        ⊱─━━━━⊱༻●༺⊰━━━━─⊰`;
-
+      let captvid = `✼ ••๑⋯ ❀ GSS_BOTWA ❀ ⋯⋅๑•• ✼
+❏ Title: ${title}
+❐ Duration: ${timestamp}
+❑ Views: ${views}
+❒ Upload: ${ago}
+❒ Link: ${url}`;
+        
       client.sendMessage(m.chat, { image: { url: thumbnail }, caption: captvid, footer: 'Author' }, { quoted: m });
 
       const audioStream = ytdl(videoUrl, {
@@ -521,7 +520,7 @@ case 'song':
             mediaUrl: url,
             title: title,
             body: wm,
-            thumbnail: await (await client.sendMessage(thumbnail)).data,
+            thumbnail: await (await client.getFile(thumbnail)).data,
             sourceUrl: url,
           },
         },
