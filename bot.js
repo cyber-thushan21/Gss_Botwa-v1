@@ -474,7 +474,7 @@ case 'fb': {
 
     break;
 }
-case 'ytdl':
+case 'song':
   if (!text) throw `Use example ${prefix + command} man meri jan`;
 
   let search = await yts(text);
@@ -521,9 +521,7 @@ case 'ytdl':
             mediaUrl: url,
             title: title,
             body: wm,
-            const thumbMessage = await client.sendMessage(m.chat, { image: { url: thumbnail } });
-const thumbnailData = thumbMessage.data;
-
+            thumbnail: await (await client.sendMessage(thumbnail)).data,
             sourceUrl: url,
           },
         },
