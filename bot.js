@@ -496,6 +496,13 @@ case 'song':
     ❒ Link: ${url}
     ⊱─━━━━⊱༻●༺⊰━━━━─⊰`;
 
+  if (!thumbnail) {
+    throw 'Thumbnail is undefined or empty.';
+  }
+
+  // Ensure thumbnail is a valid path before using client.getFile
+  const thumbnailData = await client.getFile(thumbnail);
+
   client.sendMessage(m.chat, { image: { url: thumbnail }, caption: captvid, footer: 'Author' }, { quoted: m });
 
   const audioStream = ytdl(videoUrl, {
@@ -539,6 +546,7 @@ case 'song':
     }
   });
   break;
+
 
 
 
