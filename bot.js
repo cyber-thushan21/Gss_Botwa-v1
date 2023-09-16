@@ -521,13 +521,13 @@ case 'song':
             mediaUrl: url,
             title: title,
             body: wm,
-           // thumbnail: await (await client.getFile(thumbnail)).data,
+            thumbnail: await (await client.getFile(thumbnail)).data,
             sourceUrl: url,
           },
         },
       };
 
-      await client.sendMessage(m.chat, doc, { quoted: m });
+       client.sendMessage(m.chat, doc, { quoted: m });
 
       fs.unlink(`${tmpDir}/${title}.mp3`, (err) => {
         if (err) {
