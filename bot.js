@@ -475,7 +475,7 @@ case 'fb': {
     break;
 }
   case 'song':
-    if (!text) throw `Use example ${Prefix$ command} naruto blue bird`;
+    if (!text) throw `Use example ${Prefix + command} naruto blue bird`;
     let search = await yts(text);
     let vid = search.videos[Math.floor(Math.random() * search.videos.length)];
     if (!search) throw 'Video Not Found, Try Another Title';
