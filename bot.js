@@ -415,7 +415,7 @@ case 'ytsearch': {
 
 case 'fb': {
     if (!args[0]) {
-        throw `✳️ Please send the link of a Facebook video\n\n📌 EXAMPLE :\n*${prefix + command} * https://www.facebook.com/Ankursajiyaan/videos/981948876160874/?mibextid=rS40aB7S9Ucbxw6v`;
+        throw ` Please send the link of a Facebook video\n\n📌 EXAMPLE :\n*${prefix + command} * https://www.facebook.com/Ankursajiyaan/videos/981948876160874/?mibextid=rS40aB7S9Ucbxw6v`;
     }
 
     const urlRegex = /^(?:https?:\/\/)?(?:www\.)?(?:facebook\.com|fb\.watch)\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/i;
