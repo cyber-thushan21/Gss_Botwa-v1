@@ -973,6 +973,7 @@ case "ai": case "gpt":
 
 
 
+
   
           case "dalle":
   try {
