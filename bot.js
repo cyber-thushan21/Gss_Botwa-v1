@@ -681,6 +681,25 @@ case 'weather':
 
         break;
         
+case 'getbio': // Replace 'your_command_name' with the actual command name you want to use
+  try {
+    let who
+    if (m.isGroup) who = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted.sender
+    else who = m.quoted.sender ? m.quoted.sender : m.sender
+    let bio = await client.fetchStatus(who)
+    m.reply(bio.status)
+  } catch {
+    if (text) throw `bio is private!`
+    else try {
+      let who = m.quoted ? m.quoted.sender : m.sender
+      let bio = await client.fetchStatus(who)
+      m.reply(bio.status)
+    } catch {
+      throw `bio is private!`
+    }
+  }
+  break; // Don't forget to add the 'break' statement at the end
+
 
 case 'lyrics': {
   const reactionMessage = {
