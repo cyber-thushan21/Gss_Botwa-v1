@@ -18,7 +18,8 @@ require("dotenv").config();
   //const ty =  eco.connect('mongodb+srv://rajuji:8jJOF9xIbf4F71U6@cluster0.ojdxgnu.mongodb.net/?retryWrites=true&w=majority');
   const mongoDB = require("./lib/mongoDB");
   const ytdl = require("@distube/ytdl-core");
-  const ytsr = require('ytsr');
+  
+  const ytsr = require('yt-search');
 //  const translate = require('translate-google');
   const vm = require('node:vm');
   const translate = require('translate-google-api');
