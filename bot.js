@@ -653,7 +653,7 @@ case 'readmore': {
   let [l, r] = text.split("|")
   if (!l) l = ''
   if (!r) r = ''
-  m.reply(m.chat, l + " [Read More]\n\n" + r, m)
+  m.reply(m.chat, l + " [Read More]\n\n" + r, mek)
   break;
 }
   
