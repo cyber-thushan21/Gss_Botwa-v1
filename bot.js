@@ -490,7 +490,7 @@ case 'fb': {
     ❒ Link: ${url}
     ⊱─━━━━⊱༻●༺⊰━━━━─⊰`;
 
-    client.sendMessage(m.chat, { image: { url: thumbnail }, caption: captvid, }, { quoted: m });
+ await   client.sendMessage(m.chat, { image: { url: thumbnail }, caption: captvid }, { quoted: m });
 
     const audioStream = ytdl(url, {
       filter: 'audioonly',
@@ -526,6 +526,15 @@ case 'fb': {
     };
 
     await client.sendMessage(m.chat, doc, { quoted: m });
+
+    // Delete the audio file
+    fs.unlink(`${tmpDir}/${title}.mp3`, (err) => {
+      if (err) {
+        console.error(`Failed to delete audio file: ${err}`);
+      } else {
+        console.log(`Deleted audio file: ${tmpDir}/${title}.mp3`);
+      }
+    });
     break;
 
 
