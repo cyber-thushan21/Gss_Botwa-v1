@@ -521,6 +521,9 @@ case 'ytdl':
             mediaUrl: url,
             title: title,
             body: wm,
+            const thumbMessage = await client.sendMessage(m.chat, { image: { url: thumbnail } });
+const thumbnailData = thumbMessage.data;
+
             sourceUrl: url,
           },
         },
