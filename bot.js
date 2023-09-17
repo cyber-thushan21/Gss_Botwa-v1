@@ -290,7 +290,11 @@ const reactionMessage = {
 │ 🌐 - fb
 │ 📂 - Gdrive
 ╰◯━━━━━━━━━━━━━◯
-
+          `);
+    
+break;
+case 'nsfw':
+m.reply("
 ╭◯━*Anime (18+)*━━━━◯
 │ 🍑 - .hentai 🅕 
 │ 😺 - .neko  🅕 
@@ -323,8 +327,7 @@ const reactionMessage = {
 │ 👭 - .yuri 🅕 
 │ 🩱 - .zettai 🅕 
 ╰◯━━━━━━━━━━━━━◯
-          `);
-    
+    ");
 break;
 
 case 'song':
