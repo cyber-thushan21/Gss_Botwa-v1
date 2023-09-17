@@ -1795,7 +1795,7 @@ case 'calculadora':
 
 function formatDate(date) {
 }
-case 'search':
+case 'nowa':
     let regex = /x/g;
     if (!text) throw 'Give a number to search';
     if (!text.match(regex)) throw `*Example: ${prefix + command} 919142294xxx`;
