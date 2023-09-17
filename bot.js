@@ -323,6 +323,152 @@ const reactionMessage = {
     
 break;
 
+case 'song': case 'play': case 'ytmp3': case 'music': case 'audio':
+  if (!text) throw `Use example ${prefix + command} naruto blue bird`;
+
+  let searchAudio = await yts(text); // Rename 'search' to 'searchAudio'
+  if (!searchAudio.videos || searchAudio.videos.length === 0) {
+    throw 'No videos found for the given search query';
+  }
+
+  let vidAudio = searchAudio.videos[Math.floor(Math.random() * searchAudio.videos.length)]; // Rename 'vid' to 'vidAudio'
+  if (!vidAudio) throw 'Video Not Found, Try Another Title';
+  let { title: titleAudio, thumbnail: thumbnailAudio, timestamp: timestampAudio, views: viewsAudio, ago: agoAudio, url: urlAudio } = vidAudio; // Rename variables accordingly
+  let wmAudio = 'Downloading audio please wait'; // Rename 'wm' to 'wmAudio'
+
+  let captvidAudio = `✼ ••๑⋯ ❀ Y O U T U B E ❀ ⋯⋅๑•• ✼
+    ❏ Title: ${titleAudio}
+    ❐ Duration: ${timestampAudio}
+    ❑ Views: ${viewsAudio}
+    ❒ Upload: ${agoAudio}
+    ❒ Link: ${urlAudio}
+    ⊱─━━━━⊱༻●༺⊰━━━━─⊰`;
+
+  client.sendMessage(m.chat, { image: { url: thumbnailAudio }, caption: captvidAudio }, { quoted: m });
+
+  const audioStream = ytdl(urlAudio, {
+    filter: 'audioonly',
+    quality: 'highestaudio',
+  });
+
+  const tmpDirAudio = os.tmpdir(); // Rename 'tmpDir' to 'tmpDirAudio'
+  const writableStreamAudio = fs.createWriteStream(`${tmpDirAudio}/${titleAudio}.mp3`);
+
+  await streamPipeline(audioStream, writableStreamAudio);
+
+  let thumbnailDataAudio;
+  try {
+    const thumbnailResponseAudio = await client.getFile(thumbnailAudio);
+    thumbnailDataAudio = thumbnailResponseAudio.data;
+  } catch (error) {
+    console.error('Error fetching thumbnail:', error);
+    thumbnailDataAudio = ''; // Set a default or empty value for thumbnailDataAudio
+  }
+
+  const docAudio = {
+    audio: {
+      url: `${tmpDirAudio}/${titleAudio}.mp3`,
+    },
+    mimetype: 'audio/mp4',
+    fileName: `${titleAudio}`,
+    contextInfo: {
+      externalAdReply: {
+        showAdAttribution: true,
+        mediaType: 2,
+        mediaUrl: urlAudio,
+        title: titleAudio,
+        body: wmAudio,
+        sourceUrl: urlAudio,
+        thumbnail: thumbnailDataAudio, // Use the fetched thumbnail data
+      },
+    },
+  };
+
+  await client.sendMessage(m.chat, docAudio, { quoted: m });
+
+  fs.unlink(`${tmpDirAudio}/${titleAudio}.mp3`, (err) => {
+    if (err) {
+      console.error(`Failed to delete audio file: ${err}`);
+    } else {
+      console.log(`Deleted audio file: ${tmpDirAudio}/${titleAudio}.mp3`);
+    }
+  });
+  break;
+  
+  
+case 'ytmp4': case 'video': case 'vid':
+  if (!text) throw `Use example ${prefix + command} naruto blue bird`;
+
+  let searchVideo = await yts(text); // Rename 'search' to 'searchVideo'
+  if (!searchVideo.videos || searchVideo.videos.length === 0) {
+    throw 'No videos found for the given search query';
+  }
+
+  let vidVideo = searchVideo.videos[Math.floor(Math.random() * searchVideo.videos.length)]; // Rename 'vid' to 'vidVideo'
+  if (!vidVideo) throw 'Video Not Found, Try Another Title';
+  let { title: titleVideo, thumbnail: thumbnailVideo, timestamp: timestampVideo, views: viewsVideo, ago: agoVideo, url: urlVideo } = vidVideo; // Rename variables accordingly
+  let wmVideo = 'Downloading video please wait'; // Rename 'wm' to 'wmVideo'
+
+  let captvidVideo = `✼ ••๑⋯ ❀ Y O U T U B E ❀ ⋯⋅๑•• ✼
+    ❏ Title: ${titleVideo}
+    ❐ Duration: ${timestampVideo}
+    ❑ Views: ${viewsVideo}
+    ❒ Upload: ${agoVideo}
+    ❒ Link: ${urlVideo}
+    ⊱─━━━━⊱༻●༺⊰━━━━─⊰`;
+
+  client.sendMessage(m.chat, { image: { url: thumbnailVideo }, caption: captvidVideo }, { quoted: m });
+
+  const videoStream = ytdl(urlVideo, {
+    filter: 'videoandaudio', // Get both video and audio streams
+    quality: 'highest',
+  });
+
+  const tmpDirVideo = os.tmpdir(); // Rename 'tmpDir' to 'tmpDirVideo'
+  const writableStreamVideo = fs.createWriteStream(`${tmpDirVideo}/${titleVideo}.mp4`); // Change the file extension
+
+  await streamPipeline(videoStream, writableStreamVideo);
+
+  let thumbnailDataVideo;
+  try {
+    const thumbnailResponseVideo = await client.getFile(thumbnailVideo);
+    thumbnailDataVideo = thumbnailResponseVideo.data;
+  } catch (error) {
+    console.error('Error fetching thumbnail:', error);
+    thumbnailDataVideo = ''; // Set a default or empty value for thumbnailDataVideo
+  }
+
+  const docVideo = {
+    video: {
+      url: `${tmpDirVideo}/${titleVideo}.mp4`, // Change the URL to the video file
+    },
+    mimetype: 'video/mp4', // Change the mimetype to video/mp4
+    fileName: `${titleVideo}`,
+    contextInfo: {
+      externalAdReply: {
+        showAdAttribution: true,
+        mediaType: 2,
+        mediaUrl: urlVideo,
+        title: titleVideo,
+        body: wmVideo,
+        sourceUrl: urlVideo,
+        thumbnail: thumbnailDataVideo,
+      },
+    },
+  };
+
+  await client.sendMessage(m.chat, docVideo, { quoted: m });
+
+  fs.unlink(`${tmpDirVideo}/${titleVideo}.mp4`, (err) => {
+    if (err) {
+      console.error(`Failed to delete video file: ${err}`);
+    } else {
+      console.log(`Deleted video file: ${tmpDirVideo}/${titleVideo}.mp4`);
+    }
+  });
+  break;
+
+
 case 'gdrive':
   if (!args[0]) throw ' Enter a Google Drive link';
   try {
@@ -485,79 +631,7 @@ case 'fb': {
 
     break;
 }
-  case 'song':
-  if (!text) throw `Use example ${prefix + command} man meri jan`;
-
-  let search = await yts(text);
-  if (!search.videos || search.videos.length === 0) {
-    throw 'No videos found for the given search query';
-  }
-
-  let vid = search.videos[Math.floor(Math.random() * search.videos.length)];
-  if (!vid) throw 'Video Not Found, Try Another Title';
-  let { title, thumbnail, timestamp, views, ago, url } = vid;
-  let wm = 'Downloading audio please wait';
-
-  let captvid = `✼ ••๑⋯ ❀ Y O U T U B E ❀ ⋯⋅๑•• ✼
-    ❏ Title: ${title}
-    ❐ Duration: ${timestamp}
-    ❑ Views: ${views}
-    ❒ Upload: ${ago}
-    ❒ Link: ${url}
-    ⊱─━━━━⊱༻●༺⊰━━━━─⊰`;
-
-  client.sendMessage(m.chat, { image: { url: thumbnail }, caption: captvid }, { quoted: m });
-
-  const audioStream = ytdl(url, {
-    filter: 'audioonly',
-    quality: 'highestaudio',
-  });
-
-  const tmpDir = os.tmpdir();
-  const writableStream = fs.createWriteStream(`${tmpDir}/${title}.mp3`);
-
-  await streamPipeline(audioStream, writableStream);
-
-  let thumbnailData;
-  try {
-    const thumbnailResponse = await client.getFile(thumbnail);
-    thumbnailData = thumbnailResponse.data;
-  } catch (error) {
-    console.error('Error fetching thumbnail:', error);
-    thumbnailData = ''; // Set a default or empty value for thumbnailData
-  }
-
-  const doc = {
-    audio: {
-      url: `${tmpDir}/${title}.mp3`,
-    },
-    mimetype: 'audio/mp4',
-    fileName: `${title}`,
-    contextInfo: {
-      externalAdReply: {
-        showAdAttribution: true,
-        mediaType: 2,
-        mediaUrl: url,
-        title: title,
-        body: wm,
-        sourceUrl: url,
-        thumbnail: thumbnailData, // Use the fetched thumbnail data
-      },
-    },
-  };
-
-  await client.sendMessage(m.chat, doc, { quoted: m });
-
-  fs.unlink(`${tmpDir}/${title}.mp3`, (err) => {
-    if (err) {
-      console.error(`Failed to delete audio file: ${err}`);
-    } else {
-      console.log(`Deleted audio file: ${tmpDir}/${title}.mp3`);
-    }
-  });
-  break;
-
-
+  
 
 
 case 'ping': {
@@ -589,54 +663,6 @@ case 'ping': {
     }, {});
   } 
 break;
-
-case 'cal':
-case 'calc':
-case 'calcular':
-case 'calculadora':
-  try {
-    let id = m.chat;
-    client.math = client.math ? client.math : {};
-
-    if (id in client.math) {
-      clearTimeout(client.math[id][3]);
-      delete client.math[id];
-      return m.reply('...');
-    }
-
-    let val = text
-      .replace(/[^0-9\-\/+*×÷πEe()piPI.]/g, '') // Allow decimal point '.'
-      .replace(/×/g, '*')
-      .replace(/÷/g, '/')
-      .replace(/π|pi/gi, 'Math.PI')
-      .replace(/e/gi, 'Math.E')
-      .replace(/\/+/g, '/')
-      .replace(/\++/g, '+')
-      .replace(/-+/g, '-');
-
-    let format = val
-      .replace(/Math\.PI/g, 'π')
-      .replace(/Math\.E/g, 'e')
-      .replace(/\//g, '÷')
-      .replace(/\*×/g, '×');
-
-    let result = (new Function('return ' + val))();
-
-    if (isNaN(result)) throw new Error('Invalid result');
-
-    m.reply(`*${format}* = _${result}_`);
-  } catch (error) {
-    // Handle specific error messages
-    if (error instanceof SyntaxError) {
-      return m.reply('Invalid syntax. Please check your expression.');
-    } else if (error instanceof Error) {
-      return m.reply(error.message);
-    } else {
-      // Handle unexpected errors
-      return m.reply('An unexpected error occurred.');
-    }
-  }
-  break;
                 
 case 'support': case 'supportgc': {
 const reactionMessage = {
@@ -867,17 +893,9 @@ if (!text) return m.reply(`Where is the name?\nExample: ${prefix + command} Gout
     }
 break;
 
-case 'apk': case 'yts': case 'sticker':
+case 'apk': case 'sticker':
   m.reply("This feature is Comming Soon");
 break;
-
-case 'readmore': {
-  let [l, r] = text.split("|")
-  if (!l) l = ''
-  if (!r) r = ''
-  m.reply(m.chat, l + " [Read More]\n\n" + r, mek)
-  break;
-}
   
 
 const languages = require('./lib/languages'); // Import the language codes module
@@ -1445,108 +1463,6 @@ case 'autoread': {
   break;
 }
 
-                case 'song':
-case 'music':
-case 'ytmp3':
-case 'mp3':
-case 'y2mp3':
-          const gettRandom = (ext) => { 
-             return `${Math.floor(Math.random() * 10000)}${ext}`; 
-         }; 
-  
-         if (text.length === 0) { 
-             m.reply(`❌ URL is empty! \nSend ${prefix}song Video URL`); 
-             return; 
-         } 
-         try { 
-             let urlYt = text; 
-             if (!urlYt.startsWith("http")) { 
-                 m.reply(`❌ Give youtube link!`); 
-                 return; 
-             } 
-             let infoYt = await ytdl.getInfo(urlYt); 
-             let titleYt = infoYt.videoDetails.title; 
-             let randomName = gettRandom(".mp3"); 
-             const stream = ytdl(urlYt, { 
-                     filter: (info) => info.audioBitrate == 160 || info.audioBitrate == 128, 
-                 }) 
-                 .pipe(fs.createWriteStream(`./${randomName}`)); 
-             await new Promise((resolve, reject) => { 
-                 stream.on("error", reject); 
-                 stream.on("finish", resolve); 
-             }); 
-  
-             let stats = fs.statSync(`./${randomName}`); 
-             let fileSizeInBytes = stats.size; 
-             let fileSizeInMegabytes = fileSizeInBytes / (1024 * 1024); 
-              { 
-
-                 let audioMsg = { 
-                     audio: fs.readFileSync(`./${randomName}`), 
-                     mimetype: 'audio/mp4', 
-                     fileName: titleYt + ".doc", 
-                     ptt: false,
-                  
-                 } 
-                 await client.sendMessage(m.chat, audioMsg, { quoted: m }) 
-                 return fs.unlinkSync(`./${randomName}`); 
-             } 
-             fs.unlinkSync(`./${randomName}`); 
-         } catch (e) { 
-             console.log(e) 
-         } 
-  
-break;
-                case 'video':
-case 'ytmp4':
-case 'mp4':
-case 'y2mp4':
-              const getRandom = (ext) => { 
-                 return `${Math.floor(Math.random() * 10000)}${ext}`; 
-             };
-              if (!text) { 
-                 m.reply(`❌Please provide me a url`); 
-                 return; 
-             } 
-             try { 
-                 let urlYt = text; 
-                 if (!urlYt.startsWith("http")) return m.reply(`❌ Give youtube link!`); 
-                 let infoYt = await ytdl.getInfo(urlYt); 
-                 let titleYt = infoYt.videoDetails.title; 
-                 let randomName = getRandom(".mp4"); 
-  
-                 const stream = ytdl(urlYt, { 
-                         filter: (info) => info.itag == 22 || info.itag == 18, 
-                     }) 
-                     .pipe(fs.createWriteStream(`./${randomName}`)); 
-                 await new Promise((resolve, reject) => { 
-                     stream.on("error", reject); 
-                     stream.on("finish", resolve); 
-                 }); 
-                 let stats = fs.statSync(`./${randomName}`); 
-                 let fileSizeInBytes = stats.size; 
-                 let fileSizeInMegabytes = fileSizeInBytes / (1024 * 1024); 
-                  { 
-
-       // User ko Video Vejne ka Code
-      client.sendMessage(
-          from,
-          {
-            video: fs.readFileSync(`./${randomName}`), 
-         //   video: { url: videoUrl },
-            caption: `Title : ${titleYt}\n By: *Gss_Botwa*`,
-          },
-          { quoted: m }
-        );
-             // Send karne ke bad Delete karne ka Code
-              return fs.unlinkSync(`./${randomName}`); 
-                 }
-                 return fs.unlinkSync(`./${randomName}`);       
-             } catch (e) { 
-                 console.log(e) 
-             } 
-break;
-
 
 case 'linkgc': {
     try {
@@ -1800,36 +1716,6 @@ case 'setdesc': {
 }
 
 
-case 'igdl':
-  m.reply('please wait...');
-  let res;
-  try {
-    res = await fetch(`https://inrl-web.onrender.com/api/insta?url=${text}`);
-  } catch (error) {
-    throw `An error occurred: ${error.message}`;
-  }
-
-  let api_response = await res.json();
-  if (!api_response || !api_response.result || api_response.result.length === 0) {
-    throw `No video found or Invalid response from API.`;
-  }
-
-  let cap = `HERE IS THE VIDEO >,<`;
-
-  // Save video to a temporary file with a random name
-  let randomFileName = `instagram_${Math.floor(Math.random() * 100000)}.mp4`;
-  await client.download(api_response.result[0], randomFileName);
-
-  // Read the saved video file using readFileSync
-  let videoBuffer = client.fs.readFileSync(randomFileName);
-
-  // Send the video using sendMessage
-  client.sendMessage(m.chat, { video: videoBuffer, mimetype: 'video/mp4' }, 'videoMessage', { quoted: m, caption: cap });
-
-  // Delete the temporary file
-  client.fs.unlinkSync(randomFileName);
-  break;
-
 
 
 case 'cal':
@@ -1838,11 +1724,11 @@ case 'calcular':
 case 'calculadora':
   try {
     let id = m.chat;
-    conn.math = conn.math ? conn.math : {};
+    client.math = client.math ? client.math : {};
 
-    if (id in conn.math) {
-      clearTimeout(conn.math[id][3]);
-      delete conn.math[id];
+    if (id in client.math) {
+      clearTimeout(client.math[id][3]);
+      delete client.math[id];
       return m.reply('...');
     }
 
@@ -1864,20 +1750,21 @@ case 'calculadora':
 
     let result = (new Function('return ' + val))();
 
-    if (isNaN(result)) throw 'Invalid result';
+    if (isNaN(result)) throw new Error('Invalid result');
 
     m.reply(`*${format}* = _${result}_`);
-  } catch (e) {
+  } catch (error) {
     // Handle specific error messages
-    if (typeof e === 'string') {
-      return m.reply(e);
+    if (error instanceof SyntaxError) {
+      return m.reply('Invalid syntax. Please check your expression.');
+    } else if (error instanceof Error) {
+      return m.reply(error.message);
     } else {
       // Handle unexpected errors
       return m.reply('An unexpected error occurred.');
     }
   }
-  break; // Case break statement for the calculator command
-
+  break;
 
 
 case 'ss':
@@ -1954,19 +1841,6 @@ case 'add': {
 // Function to download a TikTok video
 
 
-
-case 'spotify':
-if (!text) return reply(`Where is the link?`)
-        const Spotify = require('./lib/spotify')
-        const spotify = new Spotify(text)
-        const info = await spotify.getInfo()
-        if ((info).error) return reply(`The link you provided is not a Spotify link`)
-        const { name, artists, album_name, release_date, cover_url } = info
-        const details = `*Title:* ${name || ''}\n*Artists:* ${(artists || []).join(',')}\n*Album:* ${album_name}\n*Release Date:* ${release_date || ''}`
-       const response = await client.sendMessage(m.chat, { image: { url: cover_url }, caption: details }, { quoted: m })
-        const bufferpotify = await spotify.download()
-        await client.sendMessage(m.chat, { audio: bufferpotify }, { quoted: response })
-break
 
 
 case 'githubstalk': {
