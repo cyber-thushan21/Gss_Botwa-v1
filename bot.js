@@ -323,28 +323,33 @@ const reactionMessage = {
     
 break;
 
-case 'song': case 'play': case 'ytmp3': case 'music': case 'audio':
+case 'song':
+case 'play':
+case 'ytmp3':
+case 'music':
+case 'audio':
   if (!text) throw `Use example ${prefix + command} naruto blue bird`;
 
-  let searchAudio = await yts(text); // Rename 'search' to 'searchAudio'
+  let searchAudio = await yts(text);
   if (!searchAudio.videos || searchAudio.videos.length === 0) {
     throw 'No videos found for the given search query';
   }
 
-  let vidAudio = searchAudio.videos[Math.floor(Math.random() * searchAudio.videos.length)]; // Rename 'vid' to 'vidAudio'
+  let vidAudio = searchAudio.videos[Math.floor(Math.random() * searchAudio.videos.length)];
   if (!vidAudio) throw 'Video Not Found, Try Another Title';
-  let { title: titleAudio, thumbnail: thumbnailAudio, timestamp: timestampAudio, views: viewsAudio, ago: agoAudio, url: urlAudio } = vidAudio; // Rename variables accordingly
-  let wmAudio = 'Audio downloaded by Gss_botwa'; // Rename 'wm' to 'wmAudio'
+  let { title: titleAudio, thumbnail: thumbnailAudio, timestamp: timestampAudio, views: viewsAudio, ago: agoAudio, url: urlAudio } = vidAudio;
+  let wmAudio = 'Audio downloaded by Gss_botwa';
 
-  let captvidAudio= `
+  let captvidAudio = `
 ┏━━━━━━━━━━━━━━━━━━━━┓
 ┃ Audio by Gss_Botwa
-┃ 📝 Title: ${titleVideo}
-┃ ⏳ Duration: ${timestampVideo}
-┃ 👁️ Views: ${viewsVideo}
-┃ 📅 Upload: ${agoVideo}
-┃ 🔗 Link: ${urlVideo}
+┃ 📝 Title: ${titleAudio}
+┃ ⏳ Duration: ${timestampAudio}
+┃ 👁️ Views: ${viewsAudio}
+┃ 📅 Upload: ${agoAudio}
+┃ 🔗 Link: ${urlAudio}
 ┗━━━━━━━━━━━━━━━━━━━━┛`;
+
   client.sendMessage(m.chat, { image: { url: thumbnailAudio }, caption: captvidAudio }, { quoted: m });
 
   const audioStream = ytdl(urlAudio, {
@@ -352,7 +357,7 @@ case 'song': case 'play': case 'ytmp3': case 'music': case 'audio':
     quality: 'highestaudio',
   });
 
-  const tmpDirAudio = os.tmpdir(); // Rename 'tmpDir' to 'tmpDirAudio'
+  const tmpDirAudio = os.tmpdir();
   const writableStreamAudio = fs.createWriteStream(`${tmpDirAudio}/${titleAudio}.mp3`);
 
   await streamPipeline(audioStream, writableStreamAudio);
@@ -363,7 +368,7 @@ case 'song': case 'play': case 'ytmp3': case 'music': case 'audio':
     thumbnailDataAudio = thumbnailResponseAudio.data;
   } catch (error) {
     console.error('Error fetching thumbnail:', error);
-    thumbnailDataAudio = ''; // Set a default or empty value for thumbnailDataAudio
+    thumbnailDataAudio = '';
   }
 
   const docAudio = {
@@ -380,7 +385,7 @@ case 'song': case 'play': case 'ytmp3': case 'music': case 'audio':
         title: titleAudio,
         body: wmAudio,
         sourceUrl: urlAudio,
-        thumbnail: thumbnailDataAudio, // Use the fetched thumbnail data
+        thumbnail: thumbnailDataAudio,
       },
     },
   };
@@ -395,22 +400,23 @@ case 'song': case 'play': case 'ytmp3': case 'music': case 'audio':
     }
   });
   break;
-  
-  
-case 'ytmp4': case 'video': case 'vid':
+
+case 'ytmp4':
+case 'video':
+case 'vid':
   if (!text) throw `Use example ${prefix + command} naruto blue bird`;
 
-  let searchVideo = await yts(text); // Rename 'search' to 'searchVideo'
+  let searchVideo = await yts(text);
   if (!searchVideo.videos || searchVideo.videos.length === 0) {
     throw 'No videos found for the given search query';
   }
 
-  let vidVideo = searchVideo.videos[Math.floor(Math.random() * searchVideo.videos.length)]; // Rename 'vid' to 'vidVideo'
+  let vidVideo = searchVideo.videos[Math.floor(Math.random() * searchVideo.videos.length)];
   if (!vidVideo) throw 'Video Not Found, Try Another Title';
-  let { title: titleVideo, thumbnail: thumbnailVideo, timestamp: timestampVideo, views: viewsVideo, ago: agoVideo, url: urlVideo } = vidVideo; // Rename variables accordingly
-  let wmVideo = 'video downloaded by Gss_botwa'; // Rename 'wm' to 'wmVideo'
+  let { title: titleVideo, thumbnail: thumbnailVideo, timestamp: timestampVideo, views: viewsVideo, ago: agoVideo, url: urlVideo } = vidVideo;
+  let wmVideo = 'video downloaded by Gss_botwa';
 
-let captvidVideo = `
+  let captvidVideo = `
 ┏━━━━━━━━━━━━━━━━━━━━┓
 ┃ Video by Gss_Botwa
 ┃ 📝 Title: ${titleVideo}
@@ -419,16 +425,16 @@ let captvidVideo = `
 ┃ 📅 Upload: ${agoVideo}
 ┃ 🔗 Link: ${urlVideo}
 ┗━━━━━━━━━━━━━━━━━━━━┛`;
-   
+
   client.sendMessage(m.chat, { image: { url: thumbnailVideo }, caption: captvidVideo }, { quoted: m });
 
   const videoStream = ytdl(urlVideo, {
-    filter: 'videoandaudio', // Get both video and audio streams
+    filter: 'videoandaudio',
     quality: 'highest',
   });
 
-  const tmpDirVideo = os.tmpdir(); // Rename 'tmpDir' to 'tmpDirVideo'
-  const writableStreamVideo = fs.createWriteStream(`${tmpDirVideo}/${titleVideo}.mp4`); // Change the file extension
+  const tmpDirVideo = os.tmpdir();
+  const writableStreamVideo = fs.createWriteStream(`${tmpDirVideo}/${titleVideo}.mp4`);
 
   await streamPipeline(videoStream, writableStreamVideo);
 
@@ -438,14 +444,14 @@ let captvidVideo = `
     thumbnailDataVideo = thumbnailResponseVideo.data;
   } catch (error) {
     console.error('Error fetching thumbnail:', error);
-    thumbnailDataVideo = ''; // Set a default or empty value for thumbnailDataVideo
+    thumbnailDataVideo = '';
   }
 
   const docVideo = {
     video: {
-      url: `${tmpDirVideo}/${titleVideo}.mp4`, // Change the URL to the video file
+      url: `${tmpDirVideo}/${titleVideo}.mp4`,
     },
-    mimetype: 'video/mp4', // Change the mimetype to video/mp4
+    mimetype: 'video/mp4',
     fileName: `${titleVideo}`,
     contextInfo: {
       externalAdReply: {
