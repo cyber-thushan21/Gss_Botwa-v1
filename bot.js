@@ -243,6 +243,7 @@ const reactionMessage = {
 │ 🌐 - .translate 🅕
 │ ℹ️ - .info 🅕
 │ 🧬 - Getbio
+│ 🖇️ - tinyurl
 ╰◯━━━━━━━━━━━━━◯
 
 ╭◯━━ *Group Menu* ━━━━━◯
@@ -252,6 +253,8 @@ const reactionMessage = {
 │ 👤 - .demote @user
 │ 📣 - .group off / on
 │ 🔗 - .linkgc
+│ 🕠 - closetime
+│ 🕥 - opentime
 ╰◯━━━━━━━━━━━━━◯
 
 ╭◯━━━━ *Owner Menu* ━━━━━◯
@@ -289,6 +292,7 @@ const reactionMessage = {
 │ 🎵 - song
 │ 🌐 - fb
 │ 📂 - Gdrive
+│ 🔖 - gitclone
 ╰◯━━━━━━━━━━━━━◯
 
 ╭◯━*Anime (18+)*━━━━◯
@@ -1658,7 +1662,7 @@ function isUrl(str) {
 }
 
 case 'git': case 'gitclone':
-  if (!args[0]) return reply(`Where is the link?\nExample :\n${prefix}${command} https://github.com/DGXeon/XeonMedia`)
+  if (!args[0]) return reply(`Where is the link?\nExample :\n${prefix}${command} https://github.com/sid238/Gss_Botwa`)
   if (!isUrl(args[0]) && !args[0].includes('github.com')) return replygcxeon(`Link invalid!!`)
   let regex1 = /(?:https|git)(?::\/\/|@)github\.com[\/:]([^\/:]+)\/(.+)/i
   let [, user, repo] = args[0].match(regex1) || []
