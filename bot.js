@@ -1804,7 +1804,7 @@ case 'ssweb':
      client.sendFile(m.chat, ss, 'error.png', args[0], m);
     } catch (e) {
       console.error(e);
-      client.reply(m.chat, 'An error occurred while capturing the screenshot. Please check the URL.', m);
+      m.reply(m.chat, 'An error occurred while capturing the screenshot. Please check the URL.', m);
     }
   }
   break; // Case break statement for taking a screenshot of a web page
