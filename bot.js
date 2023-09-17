@@ -1800,7 +1800,7 @@ case 'ssweb':
     m.reply(m.chat, '*[🔎] Give a URL*');
   } else {
     try {
-      let ss = await (await fetch(`https://image.thum.io/get/fullpage/${args[0]}`)).buffer();
+      let ss = await (await fetch(`https://image.thum.io/get/fullpage/${args[0]}`));
      client.sendFile(m.chat, ss, 'error.png', args[0], m);
     } catch (e) {
       console.error(e);
