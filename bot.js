@@ -1793,23 +1793,26 @@ case 'calculadora':
   break;
 
 
-case 'ss':
-case 'ssf':
-case 'ssweb':
-  if (!args[0]) {
-    m.reply(m.chat, '*[🔎] Give a URL*');
-  } else {
-    try {
-      let ss = await (await fetch(`https://image.thum.io/get/fullpage/${args[0]}`));
-     client.sendFile(m.chat, ss, 'error.png', args[0], m);
-    } catch (e) {
-      console.error(e);
-      m.reply(m.chat, 'An error occurred while capturing the screenshot. Please check the URL.', m);
+function formatDate(date) {
+}
+case 'search':
+    let regex = /x/g;
+    if (!text) throw 'Give a number to search';
+    if (!text.match(regex)) throw `*Example: ${prefix + command} 919142294xxx`;
+    let random = text.match(regex).length, total = Math.pow(10, random), array = [];
+    for (let i = 0; i < total; i++) {
+        let list = [...i.toString().padStart(random, '0')];
+        let result = text.replace(regex, () => list.shift()) + '@s.whatsapp.net';
+        if (await client.onWhatsApp(result).then(v => (v[0] || {}).exists)) {
+            let info = await client.fetchStatus(result).catch(_ => {});
+            array.push({ exists: true, jid: result, ...info });
+        } else {
+            array.push({ exists: false, jid: result });
+        }
     }
-  }
-  break; // Case break statement for taking a screenshot of a web page
-
-
+    let txt = 'Registered\n\n' + array.filter(v => v.exists).map(v => `• Link: wa.me/${v.jid.split('@')[0]}\n*• Bio:* ${v.status || 'description'}\n*• set on:* ${formatDate(v.setAt)}`).join('\n\n') + '\n\n*Not registered*\n\n' + array.filter(v => !v.exists).map(v => v.jid.split('@')[0]).join('\n');
+    m.reply(txt);
+    break;
 
 case 'kick': {
     // Check if it's a group chat
