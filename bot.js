@@ -334,16 +334,17 @@ case 'song': case 'play': case 'ytmp3': case 'music': case 'audio':
   let vidAudio = searchAudio.videos[Math.floor(Math.random() * searchAudio.videos.length)]; // Rename 'vid' to 'vidAudio'
   if (!vidAudio) throw 'Video Not Found, Try Another Title';
   let { title: titleAudio, thumbnail: thumbnailAudio, timestamp: timestampAudio, views: viewsAudio, ago: agoAudio, url: urlAudio } = vidAudio; // Rename variables accordingly
-  let wmAudio = 'Downloading audio please wait'; // Rename 'wm' to 'wmAudio'
+  let wmAudio = 'Audio downloaded by Gss_botwa'; // Rename 'wm' to 'wmAudio'
 
-  let captvidAudio = `✼ ••๑⋯ ❀ Y O U T U B E ❀ ⋯⋅๑•• ✼
-    ❏ Title: ${titleAudio}
-    ❐ Duration: ${timestampAudio}
-    ❑ Views: ${viewsAudio}
-    ❒ Upload: ${agoAudio}
-    ❒ Link: ${urlAudio}
-    ⊱─━━━━⊱༻●༺⊰━━━━─⊰`;
-
+  let captvidAudio= `
+┏━━━━━━━━━━━━━━━━━━━━┓
+┃ 📺 ${channelName} - Y O U T U B E 📺
+┃ 📝 Title: ${titleVideo}
+┃ ⏳ Duration: ${timestampVideo}
+┃ 👁️ Views: ${viewsVideo}
+┃ 📅 Upload: ${agoVideo}
+┃ 🔗 Link: ${urlVideo}
+┗━━━━━━━━━━━━━━━━━━━━┛`;
   client.sendMessage(m.chat, { image: { url: thumbnailAudio }, caption: captvidAudio }, { quoted: m });
 
   const audioStream = ytdl(urlAudio, {
@@ -407,16 +408,18 @@ case 'ytmp4': case 'video': case 'vid':
   let vidVideo = searchVideo.videos[Math.floor(Math.random() * searchVideo.videos.length)]; // Rename 'vid' to 'vidVideo'
   if (!vidVideo) throw 'Video Not Found, Try Another Title';
   let { title: titleVideo, thumbnail: thumbnailVideo, timestamp: timestampVideo, views: viewsVideo, ago: agoVideo, url: urlVideo } = vidVideo; // Rename variables accordingly
-  let wmVideo = 'Downloading video please wait'; // Rename 'wm' to 'wmVideo'
+  let wmVideo = 'video downloaded by Gss_botwa'; // Rename 'wm' to 'wmVideo'
 
-  let captvidVideo = `✼ ••๑⋯ ❀ Y O U T U B E ❀ ⋯⋅๑•• ✼
-    ❏ Title: ${titleVideo}
-    ❐ Duration: ${timestampVideo}
-    ❑ Views: ${viewsVideo}
-    ❒ Upload: ${agoVideo}
-    ❒ Link: ${urlVideo}
-    ⊱─━━━━⊱༻●༺⊰━━━━─⊰`;
-
+let captvidVideo = `
+┏━━━━━━━━━━━━━━━━━━━━┓
+┃ 📺 ${channelName} - Y O U T U B E 📺
+┃ 📝 Title: ${titleVideo}
+┃ ⏳ Duration: ${timestampVideo}
+┃ 👁️ Views: ${viewsVideo}
+┃ 📅 Upload: ${agoVideo}
+┃ 🔗 Link: ${urlVideo}
+┗━━━━━━━━━━━━━━━━━━━━┛`;
+   
   client.sendMessage(m.chat, { image: { url: thumbnailVideo }, caption: captvidVideo }, { quoted: m });
 
   const videoStream = ytdl(urlVideo, {
