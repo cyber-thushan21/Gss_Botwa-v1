@@ -242,6 +242,7 @@ const reactionMessage = {
 │ 📋 - .delete 🅕
 │ 🌐 - .translate 🅕
 │ ℹ️ - .info 🅕
+│ 🧬 - Getbio
 ╰◯━━━━━━━━━━━━━◯
 
 ╭◯━━ *Group Menu* ━━━━━◯
@@ -283,10 +284,13 @@ const reactionMessage = {
 │ 👤 - .igs 🅕
 ╰◯━━━━━━━━━━━━━◯
 
-╭◯━ *Downloaders* ━◯
-│ 🎬 - video  
+╭◯━* Downloaders* ━◯
+│ 🎬 - video
 │ 🎵 - song
+│ 🌐 - fb
+│ 📂 - Gdrive
 ╰◯━━━━━━━━━━━━━◯
+
 ╭◯━*Anime (18+)*━━━━◯
 │ 🍑 - .hentai 🅕 
 │ 😺 - .neko  🅕 
@@ -328,7 +332,7 @@ case 'play':
 case 'ytmp3':
 case 'music':
 case 'audio':
-  if (!text) throw `Use example ${prefix + command} naruto blue bird`;
+  if (!text) throw `Use example ${prefix + command} man meri jan`;
 
   let searchAudio = await yts(text);
   if (!searchAudio.videos || searchAudio.videos.length === 0) {
@@ -404,7 +408,7 @@ case 'audio':
 case 'ytmp4':
 case 'video':
 case 'vid':
-  if (!text) throw `Use example ${prefix + command} naruto blue bird`;
+  if (!text) throw `Use example ${prefix + command} man meri jan`;
 
   let searchVideo = await yts(text);
   if (!searchVideo.videos || searchVideo.videos.length === 0) {
