@@ -338,7 +338,7 @@ case 'song': case 'play': case 'ytmp3': case 'music': case 'audio':
 
   let captvidAudio= `
 ┏━━━━━━━━━━━━━━━━━━━━┓
-┃ 📺 ${channelName} - Y O U T U B E 📺
+┃ Audio by Gss_Botwa
 ┃ 📝 Title: ${titleVideo}
 ┃ ⏳ Duration: ${timestampVideo}
 ┃ 👁️ Views: ${viewsVideo}
@@ -412,7 +412,7 @@ case 'ytmp4': case 'video': case 'vid':
 
 let captvidVideo = `
 ┏━━━━━━━━━━━━━━━━━━━━┓
-┃ 📺 ${channelName} - Y O U T U B E 📺
+┃ Video by Gss_Botwa
 ┃ 📝 Title: ${titleVideo}
 ┃ ⏳ Duration: ${timestampVideo}
 ┃ 👁️ Views: ${viewsVideo}
