@@ -1260,7 +1260,7 @@ case "sc":
               {
                 requestPaymentMessage: {
                   currencyCodeIso4217: "INR",
-                  amount1000: "99",
+                  amount1000: "999",
                   requestFrom: "0@s.whatsapp.net",
                   noteMessage: {
                     extendedTextMessage: {
