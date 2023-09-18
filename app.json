@@ -4,7 +4,7 @@
   "keywords": [
     "whatsapp bot"
   ],
-  "repository": "https://github.com/sid238/GSS-Botwa",
+  "repository": "https://github.com/sid238/Gss-Botwa",
   "stack": "container",
   "env": {
     "OPENAI_API_KEY": {
