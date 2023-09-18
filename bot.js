@@ -1241,7 +1241,7 @@ case "sc":
         case "script":
         case "scbot":
         case "repo":
-          // m.reply("https://github.com/MatrixCoder0101/GSS-Botwa");
+           m.reply("https://github.com/sid238/GSS-Botwa");
           let api = "https://api.github.com/repos/sid238/GSS-Botwa";
           axios.get(api).then(function (response) {
             github = response.data;
