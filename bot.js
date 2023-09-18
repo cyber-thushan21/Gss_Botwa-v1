@@ -1241,11 +1241,11 @@ case "sc":
         case "script":
         case "scbot":
         case "repo":
-           m.reply("https://github.com/sid238/GSS-Botwa");
-          let api = "https://api.github.com/repos/sid238/GSS-Botwa";
+           m.reply("https://github.com/sid238/Gss_Botwa");
+          let api = "https://api.github.com/repos/sid238/Gss_Botwa";
           axios.get(api).then(function (response) {
             github = response.data;
-            let txt = `                                                           *B O T  -  S C R I P T*\n\n`;
+            let txt = `  *B O T  -  S C R I P T*\n\n`;
             txt += `◦  *Name* : *${github.name}*\n`;
             txt += `◦  *Visitor* : ${github.watchers_count}\n`;
             txt += `◦  *Size* : ${(github.size / 1024).toFixed(2)} MB\n`;
