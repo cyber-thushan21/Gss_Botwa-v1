@@ -210,7 +210,7 @@ const reactionMessage = {
    await m.reply(`
    │ Hi 👋 *${pushname}*
 ╭◯━━━  *Bot Info* ━━━◯
-│ 🤖 *Bot Name* : *${botname}*
+│ 🤖 *Bot Name* : *GSS_BOTWA*
 │ 👤 *Owner Name* : *${owner_name}*
 │ 🚀 *Prefix* :  *${prefix}*
 │ ⏳ *Uptime* : *${hours}h ${minutes}m ${seconds}s*
@@ -1241,7 +1241,7 @@ case "sc":
         case "script":
         case "scbot":
         case "repo":
-           m.reply("https://github.com/sid238/Gss_Botwa");
+           //m.reply("https://github.com/sid238/Gss_Botwa");
           let api = "https://api.github.com/repos/sid238/Gss_Botwa";
           axios.get(api).then(function (response) {
             github = response.data;
@@ -1260,7 +1260,7 @@ case "sc":
               {
                 requestPaymentMessage: {
                   currencyCodeIso4217: "INR",
-                  amount99: "99",
+                  amount1000: "99",
                   requestFrom: "0@s.whatsapp.net",
                   noteMessage: {
                     extendedTextMessage: {
