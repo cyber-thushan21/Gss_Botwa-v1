@@ -1798,18 +1798,16 @@ case 'handhold':
   axios.get(`https://api.waifu.pics/sfw/${command}`)
     .then(async ({ data }) => {
       const gifUrl = data.url;
-
+      
       // Download the GIF
       const response = await axios.get(gifUrl, { responseType: 'arraybuffer' });
-
-      // Send the GIF as a media message
-      client.sendMessage(from, {
-        media: {
-          url: gifUrl,
-          mediaType: 'image/gif',
-          data: response.data,
-        },
-      });
+      const gifBuffer = Buffer.from(response.data, 'binary');
+      
+      // Send the GIF
+      await client.sendImage(from, gifBuffer, 'Success Coy', m);
+      
+      // Delete the downloaded GIF if needed
+      // fs.unlinkSync('path_to_downloaded_gif.gif');
     })
     .catch((error) => {
       console.error('Error:', error);
