@@ -1775,6 +1775,48 @@ case 'shutdown': case 'sleep':
     // Remove the process.exit() statement to prevent automatic restart
     break;
 
+case 'kill':
+case 'pat':
+case 'lick':
+case 'bite':
+case 'yeet':
+case 'bonk':
+case 'wink':
+case 'poke':
+case 'nom':
+case 'slap':
+case 'smile':
+case 'wave':
+case 'blush':
+case 'smug':
+case 'glomp':
+case 'happy':
+case 'dance':
+case 'cringe':
+case 'highfive':
+case 'handhold':
+  axios.get(`https://api.waifu.pics/sfw/${command}`)
+    .then(async ({ data }) => {
+      const gifUrl = data.url;
+
+      // Download the GIF
+      const response = await axios.get(gifUrl, { responseType: 'arraybuffer' });
+
+      // Send the GIF as a media message
+      client.sendMessage(from, {
+        media: {
+          url: gifUrl,
+          mediaType: 'image/gif',
+          data: response.data,
+        },
+      });
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      m.reply('Failed to send GIF.');
+    });
+  break;
+
 
        
   case 'setnamegc': {
