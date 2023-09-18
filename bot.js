@@ -208,10 +208,15 @@ const reactionMessage = {
 
  await loading()
    await m.reply(`
-╭◯━━━━━━━━━━━━━◯
-│    ${BOT_NAME}  
-╰◯━━━━━━━━━━━━━◯
-│ Hi 👋 *${pushname}*
+   │ Hi 👋 *${pushname}*
+╭◯━━━  *Bot Info* ━━━◯
+│ 🤖 *Bot Name* : *${botname}*
+│ 👤 *Owner Name* : *${owner_name}*
+│ 🚀 *Prefix* :  *${prefix}*
+│ ⏳ *Uptime* : *${hours}h ${minutes}m ${seconds}s*
+│ 🌐 *Mode* : *Public*
+ ╰◯━━━━━━━━━━━━◯       
+ 
 ╭◯━━━ *User Info* ━━━◯
 │ 🧑 - *Name*: ${pushname}   
 │ 📞 - *Number*: @${me.split('@')[0]}
@@ -1232,7 +1237,48 @@ case "ai": case "gpt":
           }  
             break;
 
-
+case "sc":
+        case "script":
+        case "scbot":
+        case "repo":
+          // m.reply("https://github.com/MatrixCoder0101/GSS-Botwa");
+          let api = "https://api.github.com/repos/sid238/GSS-Botwa";
+          axios.get(api).then(function (response) {
+            github = response.data;
+            let txt = `                                                           *B O T  -  S C R I P T*\n\n`;
+            txt += `◦  *Name* : *${github.name}*\n`;
+            txt += `◦  *Visitor* : ${github.watchers_count}\n`;
+            txt += `◦  *Size* : ${(github.size / 1024).toFixed(2)} MB\n`;
+            txt += `◦  *Updated* : ${moment(github.updated_at).format(
+              "DD/MM/YY"
+            )}\n`;
+            txt += `◦  *Url* : ${github.html_url}\n\n`;
+            txt += `${github.forks_count} Forks · ${github.stargazers_count} Stars · ${github.open_issues_count} Issues\n\n`;
+            txt += "*sid238*";
+            client.relayMessage(
+              m.chat,
+              {
+                requestPaymentMessage: {
+                  currencyCodeIso4217: "INR",
+                  amount99: "99",
+                  requestFrom: "0@s.whatsapp.net",
+                  noteMessage: {
+                    extendedTextMessage: {
+                      text: txt,
+                      contextInfo: {
+                        mentionedJid: [m.sender],
+                        externalAdReply: {
+                          showAdAttribution: true,
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+              {}
+            );
+          });
+          break;
 
 
 
