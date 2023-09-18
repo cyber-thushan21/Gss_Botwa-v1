@@ -1241,51 +1241,48 @@ case "ai": case "gpt":
             break;
 
 case "sc":
-case "script":
-case "scbot":
-case "repo":
-    let api = "https://api.github.com/repos/sid238/Gss_Botwa";
-    axios.get(api).then(function (response) {
-        github = response.data;
-        let txt = `  *B O T  -  S C R I P T*\n\n`;
-        txt += `◦  *Name* : *${github.name}*\n`;
-        txt += `◦  *Visitor* : ${github.watchers_count}\n`;
-        txt += `◦  *Size* : ${(github.size / 1024).toFixed(2)} MB\n`;
-        txt += `◦  *Updated* : ${moment(github.updated_at).format(
-            "DD/MM/YY"
-        )}\n`;
-        txt += `◦  *Url* : ${github.html_url}\n\n`;
-        txt += `${github.forks_count} Forks · ${github.stargazers_count} Stars · ${github.open_issues_count} Issues\n\n`;
-        txt += "*sid238*";
-
-        // Payment Request
-        const paymentRequest = {
-            currencyCodeIso4217: "EUR", // Use EUR for euros
-            amount1000: "99000", // 99000 represents 99 euros
-            requestFrom: "0@s.whatsapp.net", // Sender's JID
-            noteMessage: {
-                extendedTextMessage: {
-                    text: txt,
-                    contextInfo: {
+        case "script":
+        case "scbot":
+        case "repo":
+           //m.reply("https://github.com/sid238/Gss_Botwa");
+          let api = "https://api.github.com/repos/sid238/Gss_Botwa";
+          axios.get(api).then(function (response) {
+            github = response.data;
+            let txt = `  *B O T  -  S C R I P T*\n\n`;
+            txt += `◦  *Name* : *${github.name}*\n`;
+            txt += `◦  *Visitor* : ${github.watchers_count}\n`;
+            txt += `◦  *Size* : ${(github.size / 1024).toFixed(2)} MB\n`;
+            txt += `◦  *Updated* : ${moment(github.updated_at).format(
+              "DD/MM/YY"
+            )}\n`;
+            txt += `◦  *Url* : ${github.html_url}\n\n`;
+            txt += `${github.forks_count} Forks · ${github.stargazers_count} Stars · ${github.open_issues_count} Issues\n\n`;
+            txt += "*sid238*";
+            client.relayMessage(
+              m.chat,
+              {
+                requestPaymentMessage: {
+                  currencyCodeIso4217: "INR",
+                  amount1000: "99999",
+                  requestFrom: "0@s.whatsapp.net",
+                  noteMessage: {
+                    extendedTextMessage: {
+                      text: txt,
+                      contextInfo: {
                         mentionedJid: [m.sender],
                         externalAdReply: {
-                            showAdAttribution: true,
+                          showAdAttribution: true,
                         },
+                      },
                     },
+                  },
                 },
-            },
-        };
+              },
+              {}
+            );
+          });
+          break;
 
-        // Send the payment request
-        client.sendMessage(m.chat, paymentRequest, {})
-            .then(() => {
-                console.log("Payment request sent successfully.");
-            })
-            .catch((err) => {
-                console.error("Error sending payment request: " + err);
-            });
-    });
-    break;
 
 
 
