@@ -28,7 +28,8 @@ require("dotenv").config();
   const ffmpeg = require('fluent-ffmpeg');
 // Your code using fetch here
   const { MessageType, Mimetype } = require('@adiwajshing/baileys');
-
+const botname = "GSS Botwa";
+const OWNER_NAME = "Sid bhai";
    const crypto = require('crypto');
   const fg = require('api-dylux');
 const { pipeline } = require('stream');
@@ -211,7 +212,8 @@ const reactionMessage = {
    │ Hi 👋 *${pushname}*
 ╭◯━━━  *Bot Info* ━━━◯
 │ 🤖 *Bot Name* : *GSS_BOTWA*
-│ 👤 *Owner Name* : *${owner_name}*
+│ 👤 *Owner Name* : *${OWNER_NAME}*
+│ 👨‍💻 *owner number* : *${owner}*
 │ 🚀 *Prefix* :  *${prefix}*
 │ ⏳ *Uptime* : *${hours}h ${minutes}m ${seconds}s*
 │ 🌐 *Mode* : *Public*
@@ -1260,7 +1262,7 @@ case "sc":
               {
                 requestPaymentMessage: {
                   currencyCodeIso4217: "INR",
-                  amount1000: "999",
+                  amount100000: "999",
                   requestFrom: "0@s.whatsapp.net",
                   noteMessage: {
                     extendedTextMessage: {
