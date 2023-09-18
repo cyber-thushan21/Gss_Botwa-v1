@@ -18,7 +18,7 @@ require("dotenv").config();
   //const ty =  eco.connect('mongodb+srv://rajuji:8jJOF9xIbf4F71U6@cluster0.ojdxgnu.mongodb.net/?retryWrites=true&w=majority');
   const mongoDB = require("./lib/mongoDB");
   const ytdl = require("@distube/ytdl-core");
-  
+  const GifEncoder = require('gif-encoder-2');
   const yts = require('yt-search');
   const ytsr = require('ytsr');
 //  const translate = require('translate-google');
@@ -1775,45 +1775,155 @@ case 'shutdown': case 'sleep':
     // Remove the process.exit() statement to prevent automatic restart
     break;
 
+case 'tempmail': {
+  const baseUrl = 'https://www.1secmail.com/api/v1/?action=genRandomMailbox&count=1';
+  const timeout = 10000; // 10 seconds timeout for Axios requests
+
+  try {
+    const response = await axios.get(baseUrl);
+    const data = response.data;
+
+    if (data && data.length > 0) {
+      const tempMails = data.join('\n');
+      const replyMessage = `*Temporary Email Addresses:*\n\n${tempMails}`;
+      m.reply(replyMessage);
+    } else {
+      m.reply('Failed to generate temporary email addresses.');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    m.reply('Failed to fetch temporary email addresses.');
+  }
+  break;
+}
+
+case 'checkmail': {
+  if (!text) {
+    m.reply('Please provide a temporary email address to check messages.');
+    return;
+  }
+
+  // Split the provided email address into login and domain
+  const [login, domain] = text.split('@');
+
+  // Check if the email address was split correctly
+  if (!login || !domain) {
+    m.reply('Invalid email address format.');
+    return;
+  }
+
+  const baseUrl = 'https://www.1secmail.com/api/v1/?action=getMessages';
+
+  // Use the extracted login and domain values
+  const url = `${baseUrl}&login=${login}&domain=${domain}`;
+
+  const timeout = 10000; // 10 seconds timeout for Axios requests
+
+  try {
+    const response = await axios.get(url);
+    const data = response.data;
+
+    if (data.length > 0) {
+    const messages = data.map((message) => {
+  const bodyText = message.body ? `*Body:*\n${message.body}` : '';
+  const textBody = message.textBody ? `*Text Body:*\n${message.textBody}` : '';
+  return `
+*From:* ${message.from}
+*Subject:* ${message.subject}
+*Date:* ${message.date}
+*body:* ${textBody}
+`;
+}).join('\n\n---\n\n');
+
+
+      const replyMessage = `*Messages in* ${text}:\n\n${messages}`;
+      m.reply(replyMessage);
+    } else {
+      m.reply(`No messages found in ${text}.`);
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    m.reply(`Failed to check messages in ${text}. Error details have been logged.`);
+  }
+  break;
+}
+
+
+async function GIFBufferToVideoBuffer(gifBuffer) {
+  return new Promise((resolve, reject) => {
+    const encoder = new GifEncoder(gifBuffer.width, gifBuffer.height);
+
+    const buffers = [];
+    encoder.on('data', (buffer) => {
+      buffers.push(buffer);
+    });
+
+    encoder.on('end', () => {
+      const videoBuffer = Buffer.concat(buffers);
+      resolve(videoBuffer);
+    });
+
+    encoder.end(gifBuffer);
+  });
+}
+
+
 case 'kill':
 case 'pat':
 case 'lick':
+case 'kiss':
 case 'bite':
-case 'yeet':
+case 'bully':
 case 'bonk':
-case 'wink':
 case 'poke':
-case 'nom':
 case 'slap':
-case 'smile':
-case 'wave':
-case 'blush':
-case 'smug':
-case 'glomp':
 case 'happy':
-case 'dance':
-case 'cringe':
-case 'highfive':
-case 'handhold':
-  axios.get(`https://api.waifu.pics/sfw/${command}`)
-    .then(async ({ data }) => {
-      const gifUrl = data.url;
-      
-      // Download the GIF
-      const response = await axios.get(gifUrl, { responseType: 'arraybuffer' });
-      const gifBuffer = Buffer.from(response.data, 'binary');
-      
-      // Send the GIF
-      await client.sendImage(from, gifBuffer, 'Success Coy', m);
-      
-      // Delete the downloaded GIF if needed
-      // fs.unlinkSync('path_to_downloaded_gif.gif');
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-      m.reply('Failed to send GIF.');
-    });
-  break;
+case 'cuddle':
+case 'kick': {
+  try {
+    let messsender = m.sender;
+    let musers = ``;
+    let users;
+
+    try {
+      users = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '') + '@s.whatsapp.net';
+      ment = [messsender, users];
+    } catch {
+      users = "none";
+      ment = [messsender, m.sender];
+    }
+
+    if (users == "none") {
+      musers = `@${m.sender.split("@")[0]} ${command}ed themselves!!`;
+      console.log(musers);
+    } else {
+      const rcpp = `@${users.split("@"[0])}`;
+      musers = `@${m.sender.split("@")[0]} ${command}ed  @${users.split("@")[0]} `;
+      console.log(musers);
+    }
+
+    // Use Axios to fetch the image URL
+    const { data } = await axios.get(`https://api.waifu.pics/sfw/${command}`);
+    const gifUrl = data.url;
+
+    // Download the GIF
+    const response = await axios.get(gifUrl, { responseType: 'arraybuffer' });
+    const buffer = Buffer.from(response.data, 'utf-8');
+
+    // Convert GIF buffer to video buffer (if needed)
+    // ...
+
+// Convert GIF buffer to video buffer
+var fetchedgif = await GIFBufferToVideoBuffer(buffer);
+
+// Send the video with mentions and caption
+client.sendMessage(m.chat, { video: fetchedgif, gifPlayback: true, mentions: ment, caption: musers }, { quoted: m });
+  } catch (error) {
+    console.log(error);
+  }
+}
+break;
+
 
 
        
