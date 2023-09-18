@@ -209,7 +209,8 @@ const reactionMessage = {
 
  await loading()
    await m.reply(`
-   │ Hi 👋 *${pushname}*
+   Hi 👋 *${pushname}*
+   
 ╭◯━━━  *Bot Info* ━━━◯
 │ 🤖 *Bot Name* : *GSS_BOTWA*
 │ 👤 *Owner Name* : *${OWNER_NAME}*
@@ -1262,7 +1263,7 @@ case "sc":
               {
                 requestPaymentMessage: {
                   currencyCodeIso4217: "INR",
-                  amount100000: "999",
+                  amount1000: "99999",
                   requestFrom: "0@s.whatsapp.net",
                   noteMessage: {
                     extendedTextMessage: {
