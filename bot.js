@@ -252,6 +252,8 @@ const reactionMessage = {
 │ ℹ️ - .info 🅕
 │ 🧬 - Getbio
 │ 🖇️ - tinyurl
+│ 📧 - tempmail
+│ 📩 - checkmail
 ╰◯━━━━━━━━━━━━━◯
 
 ╭◯━━ *Group Menu* ━━━━━◯
