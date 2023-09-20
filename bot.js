@@ -1799,8 +1799,8 @@ case 'tempmail': {
 
 case 'checkmail': {
   if (!text) {
-    m.reply('Please provide a temporary email address to check messages.');
-    return;
+    m.reply('Please provide an email address to read the most recent message.');
+    break;
   }
 
   // Split the provided email address into login and domain
@@ -1809,7 +1809,7 @@ case 'checkmail': {
   // Check if the email address was split correctly
   if (!login || !domain) {
     m.reply('Invalid email address format.');
-    return;
+    break;
   }
 
   const baseUrl = 'https://www.1secmail.com/api/v1/?action=getMessages';
@@ -1820,34 +1820,38 @@ case 'checkmail': {
   const timeout = 10000; // 10 seconds timeout for Axios requests
 
   try {
-    const response = await axios.get(url);
+    const response = await axios.get(url, { timeout });
     const data = response.data;
 
-    if (data.length > 0) {
-    const messages = data.map((message) => {
-  const bodyText = message.body ? `*Body:*\n${message.body}` : '';
-  const textBody = message.textBody ? `*Text Body:*\n${message.textBody}` : '';
-  return `
-*From:* ${message.from}
-*Subject:* ${message.subject}
-*Date:* ${message.date}
-*body:* ${textBody}
-`;
-}).join('\n\n---\n\n');
+    if (data && data.length > 0) {
+      // Extract the latest message ID
+      const latestMessageId = data[0].id;
 
+      // Use the latest message ID to read the message
+      const readUrl = `https://www.1secmail.com/api/v1/?action=readMessage&login=${login}&domain=${domain}&id=${latestMessageId}`;
 
-      const replyMessage = `*Messages in* ${text}:\n\n${messages}`;
-      m.reply(replyMessage);
+      const readResponse = await axios.get(readUrl, { timeout });
+      const messageData = readResponse.data;
+
+      if (messageData && messageData.textBody) {
+        const sender = messageData.from;
+        const date = messageData.date;
+        const subject = messageData.subject || 'No Subject';
+
+        const replyMessage = `*Message in* ${text}:\n\n*From:* ${sender}\n*Subject:* ${subject}\n*Date:* ${date}\n\n*Messages:*\n\n${messageData.textBody}`;
+        m.reply(replyMessage, m.from, { caption: replyMessage });
+      } else {
+        m.reply(`No message found in ${text}.`);
+      }
     } else {
       m.reply(`No messages found in ${text}.`);
     }
   } catch (error) {
     console.error('Error:', error);
-    m.reply(`Failed to check messages in ${text}. Error details have been logged.`);
+    m.reply(`Failed to read the most recent message in ${text}.`);
   }
   break;
 }
-
 
 async function GIFBufferToVideoBuffer(gifBuffer) {
   return new Promise((resolve, reject) => {
