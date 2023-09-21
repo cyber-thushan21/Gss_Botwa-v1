@@ -77,6 +77,9 @@ const prem = JSON.parse(fs.readFileSync('./database/premium.json'))
     	const isBotAdmins = m.isGroup ? groupAdmins.includes(botNumber) : false
         const isGroupAdmins = m.isGroup ? groupAdmins.includes(m.sender) : false
 	const isAdmins = m.isGroup ? groupAdmins.includes(m.sender) : false
+	
+	const gsscreator = [owner].map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender)
+        const gssowner = m.sender == botNumber ? true : false
 	//stop another
 const content = JSON.stringify(m.message)
 const numberQuery = text.replace(new RegExp("[()+-/ +/]", "gi"), "") + "@s.whatsapp.net"
