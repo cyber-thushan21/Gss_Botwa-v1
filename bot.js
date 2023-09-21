@@ -2236,7 +2236,7 @@ if (!args[0]) return reply(`Use ${prefix+command} number\nExample${prefix+comman
 bnnd = q.split("|")[0].replace(/[^0-9]/g, '')
 let ceknye = await client.onWhatsApp(bnnd)
 if (ceknye.length == 0) return reply(`Enter A Valid And Registered Number On WhatsApp!!!`)
-owner.push(bnnd)
+owners.push(bnnd)
 fs.writeFileSync('./database/owner.json', JSON.stringify(owner))
 reply(`Number ${bnnd} Has Become An Owner!!!`)
 break
@@ -2244,8 +2244,8 @@ case 'delowner':
   if (!GssCreator && !GssOwner) return reply('you are not my owner')
 if (!args[0]) return reply(`Use ${prefix+command} nomor\nExample ${prefix+command} 916909137213`)
 ya = q.split("|")[0].replace(/[^0-9]/g, '')
-unp = owner.indexOf(ya)
-owner.splice(unp, 1)
+unp = owners.indexOf(ya)
+owners.splice(unp, 1)
 fs.writeFileSync('./database/owner.json', JSON.stringify(owner))
 reply(`The Numbrr ${ya} Has been deleted from owner list by the owner!!!`)
 break
