@@ -1080,33 +1080,39 @@ const igs = require('api-dylux')
 }
 break;
   
- case "img": 
-   await loading()
-   if (!text) throw `*This command generates image from texts*\n\n*𝙴xample usage*\n*◉ ${prefix + command} Beautiful animegirl*\n*◉ ${prefix + command} elon musk in pink output*`;  
-  
-    try {  
-      m.reply('*Please wait, generating images...*');  
-  
-      const endpoint = `https://gurugpt.cyclic.app/dalle?prompt=${text}&model=art`;  
-      const response = await fetch(endpoint);  
-      const data = await response.json();  
-  
-      if (data.result && Array.isArray(data.result)) {  
-        for (let i = 0; i < Math.min(data.result.length, 2); i++) {  
-          const imageUrl = data.result[i];  
-          const imageResponse = await fetch(imageUrl);  
-          const imageBuffer = await imageResponse.buffer();  
-          console.log(response); 
-          await client.sendImage(from, imageBuffer, text, mek);  
-        }  
-      } else {  
-        throw '*Image generation failed*';  
-      }  
-    } catch {  
-      throw '*Oops! Something went wrong while generating images. Please try again later.*';  
-    }  
-  
- break;
+ case 'dalle': case 'img': case 'image': {
+  if (!text) throw `*This command generates images from text*\n\n*𝙴xample usage*\n*◉ ${prefix + command} Beautiful animegirl*\n*◉ ${prefix + command} elon musk in pink output*`; 
+
+  try {
+    m.reply('*Please wait, generating images...*');
+
+    const endpoint = `https://gurugpt.cyclic.app/dalle?prompt=${encodeURIComponent(text)}&model=art`;
+
+    // Use Axios to make the HTTP request
+    axios.get(endpoint)
+      .then(async (response) => {
+        const data = response.data;
+
+        if (data.result && Array.isArray(data.result) && data.result.length >= 3) {
+          // Extract the  three URLs
+          const [url1, url2, url3] = data.result.slice(0, 3);
+
+          // Send the images one by one
+          await client.sendMessage(m.chat, { image: { url: url1 }, caption: text }, { quoted: m });
+          await client.sendMessage(m.chat, { image: { url: url2 }, caption: text }, { quoted: m });
+          await client.sendMessage(m.chat, { image: { url: url3 }, caption: text }, { quoted: m });
+        } else {
+          throw '*Image generation failed*';
+        }
+      })
+      .catch(() => {
+        throw '*Oops! Something went wrong while generating images. Please try again later.*';
+      });
+  } catch {
+    throw '*Oops! Something went wrong while generating images. Please try again later.*';
+  }
+}
+break;
   
 case 'google': {
 const reactionMessage = {
@@ -1284,35 +1290,6 @@ case "sc":
             );
           });
           break;
-
-
-
-
-  
-          case "dalle":
-  try {
-    if (!text) throw `*यह कमांड पाठ से छवियाँ उत्पन्न करता है*\n\n*����xample usage*\n*��� ${usedPrefix + command} Beautiful animegirl*\n*��� ${usedPrefix + command} elon musk in pink output*`;
-
-    m.reply('*कृपया प्रतीक्षा करें, छवियाँ उत्पन्न हो रही हैं...*');
-
-    const endpoint = `https://gurugpt.cyclic.app/dalle?prompt=${encodeURIComponent(text)}&model=art`;
-    const response = await fetch(endpoint);
-    const data = await response.json();
-
-    if (data.result && Array.isArray(data.result)) {
-      for (let i = 0; i < Math.min(data.result.length, 2); i++) {
-        const imageUrl = data.result[i];
-        const imageResponse = await fetch(imageUrl);
-        const imageBuffer = await imageResponse.buffer();
-        await client.sendImage(m.chat, imageBuffer, null, null, mek);
-      }
-    } else {
-      throw '*छवि उत्पन्न करने में विफल*';
-    }
-  } catch {
-    throw '*ओह! छवियाँ उत्पन्न करते समय कुछ गलत हो गया। कृपया बाद में पुन: प्रयास करें*';
-  }
-  break;
 
 case 'ahegao':
 loading()
