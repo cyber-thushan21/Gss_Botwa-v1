@@ -1680,6 +1680,7 @@ case 'git': case 'gitclone':
                 
 case 'self': {
   if (!gsscreator) return reply('you are not my owner')
+  if (gssowner) return reply ('you are not a bot admin')
         client.sendMessage(from, { react: { text: "🔐" , key: m.key }})
         client.public = false
         reply('mode changed in to private. only admin can use me!')
