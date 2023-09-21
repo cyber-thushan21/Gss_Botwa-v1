@@ -53,6 +53,7 @@ const pushname = m.pushName || "No Name"
 const botNumber = await client.decodeJid(client.user.id)
 
 const { parseMention } = require('./lib/myfunc.js');
+let ntlinkgc =JSON.parse(fs.readFileSync('./database/antilinkgc.json'));
  
 
 //const isCreator = [botNumber, ...owner].map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender)
@@ -97,6 +98,7 @@ const prem = JSON.parse(fs.readFileSync('./database/premium.json'))
     	const isBotAdmins = m.isGroup ? groupAdmins.includes(botNumber) : false
         const isGroupAdmins = m.isGroup ? groupAdmins.includes(m.sender) : false
 	const isAdmins = m.isGroup ? groupAdmins.includes(m.sender) : false
+	const Antilinkgc = m.isGroup ? ntlinkgc.includes(m.chat) : false
 	
 	const GssCreator = [owner].map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender)
   const GssOwner = m.sender == botNumber ? true : false
@@ -195,6 +197,55 @@ if (process.env.ALWAYS_ONLINE || 'false' === 'false') {
 }
 else {
   client.sendPresenceUpdate('unavailable', m.chat)
+}
+
+//antilink for group chat
+if (Antilinkgc) {
+    if (budy.match(`chat.whatsapp.com`)) {
+        
+        // Add a variable to track if the warning has been sent
+        let warningSent = false;
+        
+        let gclink = (`https://chat.whatsapp.com/`+await client.groupInviteCode(m.chat))
+        let isLinkThisGc = new RegExp(gclink, 'i')
+        let isgclink = isLinkThisGc.test(m.text)
+        
+        if (isgclink) {
+            // Check if the warning has already been sent
+            if (!warningSent) {
+                client.sendMessage(m.chat, {text: `\`\`\`「 Group Link Detected 」\`\`\`\n\nYou won't be kicked by a bot because what you sent is a link to this group`});
+                warningSent = true; // Set the flag to true
+            }
+            return; // Don't perform further actions
+        }
+        
+        if (GssCreator) {
+            // Check if the warning has already been sent
+            if (!warningSent) {
+                client.sendMessage(m.chat, {text: `\`\`\`「 Group Link Detected 」\`\`\`\n\nOwner has sent a link, owner is free to post any link`});
+                warningSent = true; // Set the flag to true
+            }
+            return; // Don't perform further actions
+        }
+        
+        kice = m.sender
+        await client.sendMessage(m.chat,
+        {
+            delete: {
+                remoteJid: m.chat,
+                fromMe: false,
+                id: m.key.id,
+                participant: m.key.participant
+            }
+        })
+        
+        client.groupParticipantsUpdate(m.chat, [m.sender], 'remove')
+        
+        // Check if the warning has already been sent
+        if (!warningSent) {
+            client.sendMessage(from, {text:`\`\`\`「 Group Link Detected 」\`\`\`\n\n@${kice.split("@")[0]} Has been kicked because of sending a group link in this group`, contextInfo:{mentionedJid:[kice]}}, {quoted:m})
+        }
+    }            
 }
         
       if (isCmd) {  
@@ -2013,6 +2064,38 @@ if (!isAdmins) return reply('this feature is only for admin')
 
     break;
 }
+
+case 'antilinkgc': {
+    if (!m.isGroup) return reply('Only for groups');
+    if (!isAdmins) return reply('Test');
+    
+    if (args[0] === "on") {
+        if (Antilinkgc) return reply('Already activated');
+        ntlinkgc.push(from);
+        fs.writeFileSync('./database/antilinkgc.json', JSON.stringify(ntlinkgc));
+        reply('Success in turning on antilink in this group');
+        
+        var groupe = await client.groupMetadata(from);
+        var members = groupe['participants'];
+        var mems = [];
+        
+        members.forEach(adm => {
+            mems.push(adm.id.replace('c.us', 's.whatsapp.net'));
+        });
+        
+        // Send the warning message only once
+        client.sendMessage(from, {text: `\`\`\`「 ⚠️ Warning ⚠️ 」\`\`\`\n\nNobody is allowed to send group links in this group. Those who send links will be kicked immediately!`, contextInfo: { mentionedJid: mems }}, { quoted: m });
+    } else if (args[0] === "off") {
+        if (!Antilinkgc) return reply('Already deactivated');
+        let off = ntlinkgc.indexOf(from);
+        ntlinkgc.splice(off, 1);
+        fs.writeFileSync('./database/antilinkgc.json', JSON.stringify(ntlinkgc));
+        reply('Success in turning off antilink in this group');
+    } else {
+        await reply(`Please type the option\n\nExample: ${prefix + command} on\nExample: ${prefix + command} off\n\n"on" to enable\n"off" to disable`);
+    }
+}
+break;
 
 case 'add': {
    if (!m.isGroup) return reply('this is only for group')
