@@ -581,6 +581,7 @@ break
 case 'delall':
 case 'delete':
 case 'del': 
+  if (!gsscreator) return reply('you are not my owner')
     
         if (!m.quoted) return reply('Please mention a message');
         let { chat, id } = m.quoted;
@@ -1472,6 +1473,7 @@ if (!isAdmins) return reply('this feature is only for admin')
 }
 
 case 'autoread': {
+  if (!gsscreator) return reply('you are not my owner')
   if (!args[0]) return reply(`Send the command with options: on or off. Example: ${prefix}${command} on`);
 
   if (args[0].toLowerCase() === 'on') {
@@ -1548,6 +1550,7 @@ if (!isAdmins) return reply('this feature is only for admin')
 // Define an async function to mention all group members
 
 case 'block': {
+  if (!gsscreator) return reply('you are not my owner')
   try {
     // Check if there is no text and no quoted message
     if (!text && !m.quoted) return reply(`🚩 Mention or Reply chat target.`);
@@ -1588,6 +1591,7 @@ case 'block': {
 }
 
 case 'unblock': {
+  if (!gsscreator) return reply('you are not my owner')
   try {
     // Check if there is no text and no quoted message
     if (!text && !m.quoted) return reply(`🚩 Mention or Reply chat target.`);
@@ -1675,6 +1679,7 @@ case 'git': case 'gitclone':
 
                 
 case 'self': {
+  if (!gsscreator) return reply('you are not my owner')
         client.sendMessage(from, { react: { text: "🔐" , key: m.key }})
         client.public = false
         reply('mode changed in to private. only admin can use me!')
@@ -1683,6 +1688,7 @@ case 'self': {
         break;
 
 case 'public': {
+  if (!gsscreator) return reply('you are not my owner')
         client.sendMessage(from, { react: { text: "🔓" , key: m.key }})
         client.public = true
         reply('mode changed in to public. now all user user me!')
@@ -2140,6 +2146,7 @@ if (!isAdmins) return reply('this feature is only for admin')
     break;
 
 case 'addowner':
+  if (!gsscreator) return reply('you are not my owner')
 if (!args[0]) return reply(`Use ${prefix+command} number\nExample${prefix+command} ${owner}`)
 bnnd = q.split("|")[0].replace(/[^0-9]/g, '')
 let ceknye = await client.onWhatsApp(bnnd)
@@ -2149,6 +2156,7 @@ fs.writeFileSync('./database/owner.json', JSON.stringify(owner))
 reply(`Number ${bnnd} Has Become An Owner!!!`)
 break
 case 'delowner':
+  if (!gsscreator) return reply('you are not my owner')
 if (!args[0]) return reply(`Use ${prefix+command} nomor\nExample ${prefix+command} 916909137213`)
 ya = q.split("|")[0].replace(/[^0-9]/g, '')
 unp = owner.indexOf(ya)
@@ -2157,6 +2165,7 @@ fs.writeFileSync('./database/owner.json', JSON.stringify(owner))
 reply(`The Numbrr ${ya} Has been deleted from owner list by the owner!!!`)
 break
 case 'listpremium': case 'listprem':
+  if (!gsscreator) return reply('you are not my owner')
 teks = '*Premium List*\n\n'
 for (let client of prem) {
 teks += `- ${client}\n`
@@ -2165,6 +2174,7 @@ teks += `\n*Total : ${prem.length}*`
 client.sendMessage(m.chat, { text: teks.trim() }, 'extendedTextMessage', { quoted: m, contextInfo: { "mentionedJid": prem } })
 break
 case 'addprem': case 'addpremium':
+  if (!gsscreator) return reply('you are not my owner')
 if (!args[0]) return reply(`Use ${prefix+command} number\nExample${prefix+command} 919142294xxx`)
 prrkek = q.split("|")[0].replace(/[^0-9]/g, '')+`@s.whatsapp.net`
 let ceknya = await client.onWhatsApp(prrkek)
@@ -2174,6 +2184,7 @@ fs.writeFileSync('./database/ium.json', JSON.stringify())
 reply(`The Number ${prrkek} Has Been ium!`)
 break
 case 'delprem': case 'delpremium':
+  if (!gsscreator) return reply('you are not my owner')
 if (!args[0]) return reply(`Use ${prefix+command} nomor\nExample ${prefix+command} 916909137213`)
 ya = q.split("|")[0].replace(/[^0-9]/g, '')+`@s.whatsapp.net`
 unp = .indexOf(ya)
