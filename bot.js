@@ -1688,7 +1688,7 @@ case 'self': {
         break;
 
 case 'public': {
-  if (!gsscreator) return reply('you are not my owner')
+  if (!GssCreator && !GssOwner) return reply('you are not my owner')
         client.sendMessage(from, { react: { text: "🔓" , key: m.key }})
         client.public = true
         reply('mode changed in to public. now all user user me!')
