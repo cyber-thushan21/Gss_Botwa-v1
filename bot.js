@@ -2245,7 +2245,7 @@ case 'delowner':
 if (!args[0]) return reply(`Use ${prefix+command} nomor\nExample ${prefix+command} 916909137213`)
 ya = q.split("|")[0].replace(/[^0-9]/g, '')
 unp = owner.indexOf(ya)
-owner.splice(unp, 1)
+owners.splice(unp, 1)
 fs.writeFileSync('./database/owner.json', JSON.stringify(owner))
 reply(`The Numbrr ${ya} Has been deleted from owner list by the owner!!!`)
 break
