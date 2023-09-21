@@ -62,24 +62,6 @@ const quoted = m.quoted ? m.quoted : m
 const mime = (quoted.msg || quoted).mimetype || ''
 const isMedia = /image|video|sticker|audio/.test(mime)
 const from = mek.key.remoteJid
-//for grouo and other
-const prem = JSON.parse(fs.readFileSync('./database/premium.json'))
- const owners = JSON.parse(fs.readFileSync('./database/owner.json'))
- const isPrem = prem.includes(m.sender)
- const sender = m.isGroup ? (m.key.participant ? m.key.participant : m.participant) : m.key.remoteJid
-        const senderNumber = sender.split('@')[0]
-        const groupMetadata = m.isGroup ? await client.groupMetadata(m.chat).catch(e => {}) : ''
-        const groupName = m.isGroup ? groupMetadata.subject : ''
-        const participants = m.isGroup ? await groupMetadata.participants : ''
-        const groupAdmins = m.isGroup ? await participants.filter(v => v.admin !== null).map(v => v.id) : ''
-        const groupOwner = m.isGroup ? groupMetadata.owner : ''
-        const groupMembers = m.isGroup ? groupMetadata.participants : ''
-    	const isBotAdmins = m.isGroup ? groupAdmins.includes(botNumber) : false
-        const isGroupAdmins = m.isGroup ? groupAdmins.includes(m.sender) : false
-	const isAdmins = m.isGroup ? groupAdmins.includes(m.sender) : false
-	
-	const gsscreator = [owner].map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender)
-        const gssowner = m.sender == botNumber ? true : false
 	//stop another
 const content = JSON.stringify(m.message)
 const numberQuery = text.replace(new RegExp("[()+-/ +/]", "gi"), "") + "@s.whatsapp.net"
@@ -100,6 +82,24 @@ const mentionUser = [...new Set([...(m.mentionedJid || []), ...(m.quoted ? [m.qu
 const mentionByReply = type == 'extendedTextMessage' && m.message.extendedTextMessage.contextInfo != null ? m.message.extendedTextMessage.contextInfo.participant || '' : ''
 const usernya = mentionByReply ? mentionByReply : mentionByTag[0]
 const isEval = body.startsWith('=>')
+
+const prem = JSON.parse(fs.readFileSync('./database/premium.json'))
+ const owners = JSON.parse(fs.readFileSync('./database/owner.json'))
+ const isPrem = prem.includes(m.sender)
+ const sender = m.isGroup ? (m.key.participant ? m.key.participant : m.participant) : m.key.remoteJid
+        const senderNumber = sender.split('@')[0]
+        const groupMetadata = m.isGroup ? await client.groupMetadata(m.chat).catch(e => {}) : ''
+        const groupName = m.isGroup ? groupMetadata.subject : ''
+        const participants = m.isGroup ? await groupMetadata.participants : ''
+        const groupAdmins = m.isGroup ? await participants.filter(v => v.admin !== null).map(v => v.id) : ''
+        const groupOwner = m.isGroup ? groupMetadata.owner : ''
+        const groupMembers = m.isGroup ? groupMetadata.participants : ''
+    	const isBotAdmins = m.isGroup ? groupAdmins.includes(botNumber) : false
+        const isGroupAdmins = m.isGroup ? groupAdmins.includes(m.sender) : false
+	const isAdmins = m.isGroup ? groupAdmins.includes(m.sender) : false
+	
+	const gsscreator = [owner].map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender)
+        const gssowner = m.sender == botNumber ? true : false
  
 //=================================================//}  
 //  Bot Prosess Time
