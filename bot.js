@@ -2179,7 +2179,7 @@ if (!args[0]) return reply(`Use ${prefix+command} number\nExample${prefix+comman
 prrkek = q.split("|")[0].replace(/[^0-9]/g, '')+`@s.whatsapp.net`
 let ceknya = await client.onWhatsApp(prrkek)
 if (ceknya.length == 0) return reply(`Enter a valid and registered number on WhatsApp!!!`)
-.push(prrkek)
+prem.push(prrkek)
 fs.writeFileSync('./database/ium.json', JSON.stringify())
 reply(`The Number ${prrkek} Has Been ium!`)
 break
@@ -2187,8 +2187,8 @@ case 'delprem': case 'delpremium':
   if (!gsscreator) return reply('you are not my owner')
 if (!args[0]) return reply(`Use ${prefix+command} nomor\nExample ${prefix+command} 916909137213`)
 ya = q.split("|")[0].replace(/[^0-9]/g, '')+`@s.whatsapp.net`
-unp = .indexOf(ya)
-.splice(unp, 1)
+unp = prem.indexOf(ya)
+prem.splice(unp, 1)
 fs.writeFileSync('./database/ium.json', JSON.stringify())
 reply(`The Number ${ya} Has Been Removed ium!`)
 break
