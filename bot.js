@@ -2258,24 +2258,24 @@ teks += `- ${client}\n`
 teks += `\n*Total : ${prem.length}*`
 client.sendMessage(m.chat, { text: teks.trim() }, 'extendedTextMessage', { quoted: m, contextInfo: { "mentionedJid": prem } })
 break
-case 'addprem': case 'addpremium':
+case 'addprem':
   if (!GssCreator && !GssOwner) return reply('you are not my owner')
-if (!args[0]) return reply(`Use ${prefix+command} number\nExample${prefix+command} 919142294xxx`)
+if (!args[0]) return reply(`Use ${prefix+command}number\nExample${prefix+command} 919142294671`)
 prrkek = q.split("|")[0].replace(/[^0-9]/g, '')+`@s.whatsapp.net`
 let ceknya = await client.onWhatsApp(prrkek)
 if (ceknya.length == 0) return reply(`Enter a valid and registered number on WhatsApp!!!`)
 prem.push(prrkek)
-fs.writeFileSync('./database/ium.json', JSON.stringify())
-reply(`The Number ${prrkek} Has Been ium!`)
+fs.writeFileSync('./database/premium.json', JSON.stringify(prem))
+reply(`The Number ${prrkek} Has Been Premium!`)
 break
-case 'delprem': case 'delpremium':
+case 'delprem':
   if (!GssCreator && !GssOwner) return reply('you are not my owner')
-if (!args[0]) return reply(`Use ${prefix+command} nomor\nExample ${prefix+command} 916909137213`)
+if (!args[0]) return reply(`Use ${prefix+command} nomor\nExample${prefix+command} 919142294671`)
 ya = q.split("|")[0].replace(/[^0-9]/g, '')+`@s.whatsapp.net`
 unp = prem.indexOf(ya)
 prem.splice(unp, 1)
-fs.writeFileSync('./database/ium.json', JSON.stringify())
-reply(`The Number ${ya} Has Been Removed ium!`)
+fs.writeFileSync('./database/premium.json', JSON.stringify(prem))
+reply(`The Number ${ya} Has Been Removed Premium!`)
 break
 
 default: {  
