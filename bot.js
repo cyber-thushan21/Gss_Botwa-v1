@@ -98,8 +98,8 @@ const prem = JSON.parse(fs.readFileSync('./database/premium.json'))
         const isGroupAdmins = m.isGroup ? groupAdmins.includes(m.sender) : false
 	const isAdmins = m.isGroup ? groupAdmins.includes(m.sender) : false
 	
-	const gsscreator = [owner].map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender)
-        const gssowner = m.sender == botNumber ? true : false
+	const GssCreator = [owner].map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender)
+  const GssOwner = m.sender == botNumber ? true : false
  
 //=================================================//}  
 //  Bot Prosess Time
@@ -1679,8 +1679,7 @@ case 'git': case 'gitclone':
 
                 
 case 'self': {
-  if (!gsscreator) return reply('you are not my owner')
-  if (!gssowner) return reply ('you are not a bot admin')
+  if (!GssCreator && !GssOwner) return reply('you are not my owner')
         client.sendMessage(from, { react: { text: "🔐" , key: m.key }})
         client.public = false
         reply('mode changed in to private. only admin can use me!')
