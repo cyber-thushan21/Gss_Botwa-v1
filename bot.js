@@ -62,16 +62,22 @@ const quoted = m.quoted ? m.quoted : m
 const mime = (quoted.msg || quoted).mimetype || ''
 const isMedia = /image|video|sticker|audio/.test(mime)
 const from = mek.key.remoteJid
-//const groupMetadata = m.isGroup ? await client.groupMetadata(from).catch(e => {}) : ''
-const sender = m.isGroup ? (m.key.participant ? m.key.participant : m.participant) : m.key.remoteJid
-//const participants = m.isGroup ? await groupMetadata.participants : ''
-//const groupAdmins = m.isGroup ? await getGroupAdmins(participants) : ''
-//const isBotAdmins = m.isGroup ? groupAdmins.includes(owner) : false
-//const isAdmins = m.isGroup ? groupAdmins.includes(m.sender) : false
-//const welcmm = m.isGroup ? wlcmm.includes(from) : false 
-//const AntiLink = m.isGroup ? ntilink.includes(from) : false 
-//const Antilinkgc = m.isGroup ? ntlinkgc.includes(m.chat) : false
-//const isBan = banned.includes(m.sender)
+//for grouo and other
+const prem = JSON.parse(fs.readFileSync('./database/premium.json'))
+ const owners = JSON.parse(fs.readFileSync('./database/owner.json'))
+ const isPrem = prem.includes(m.sender)
+ const sender = m.isGroup ? (m.key.participant ? m.key.participant : m.participant) : m.key.remoteJid
+        const senderNumber = sender.split('@')[0]
+        const groupMetadata = m.isGroup ? await client.groupMetadata(m.chat).catch(e => {}) : ''
+        const groupName = m.isGroup ? groupMetadata.subject : ''
+        const participants = m.isGroup ? await groupMetadata.participants : ''
+        const groupAdmins = m.isGroup ? await participants.filter(v => v.admin !== null).map(v => v.id) : ''
+        const groupOwner = m.isGroup ? groupMetadata.owner : ''
+        const groupMembers = m.isGroup ? groupMetadata.participants : ''
+    	const isBotAdmins = m.isGroup ? groupAdmins.includes(botNumber) : false
+        const isGroupAdmins = m.isGroup ? groupAdmins.includes(m.sender) : false
+	const isAdmins = m.isGroup ? groupAdmins.includes(m.sender) : false
+	//stop another
 const content = JSON.stringify(m.message)
 const numberQuery = text.replace(new RegExp("[()+-/ +/]", "gi"), "") + "@s.whatsapp.net"
 const mentionByTag = m.mtype == "extendedTextMessage" && m.message.extendedTextMessage.contextInfo != null ? m.message.extendedTextMessage.contextInfo.mentionedJid : []
@@ -135,7 +141,9 @@ const isEval = body.startsWith('=>')
         return !color ? chalk.green(text) : chalk.keyword(color)(text);  
       };  
   
-
+async function replyprem(teks) {
+    m.reply(`This feature is specifically for premium user, contact the owner to become premium user`)
+}
 
 
 function pickRandom(list) {
@@ -517,6 +525,8 @@ case 'gdrive':
   break;
             
                 case 'opentime': {
+                   if (!m.isGroup) return reply('this is only for group')
+if (!isAdmins) return reply('this feature is only for admin')
 if (args[1] == 'second') {
 var timer = args[0] * `1000`
 } else if (args[1] == 'minute') {
@@ -539,6 +549,8 @@ reply(open)
 break
 
 case 'closetime': {
+   if (!m.isGroup) return reply('this is only for group')
+if (!isAdmins) return reply('this feature is only for admin')
 if (args[1] == 'second') {
 var timer = args[0] * `1000`
 } else if (args[1] == 'minute') {
@@ -752,7 +764,9 @@ case 'weather':
 
         break;
         
-case 'getbio': // Replace 'your_command_name' with the actual command name you want to use
+case 'getbio':  
+   if (!m.isGroup) return reply('this is only for group')
+if (!isAdmins) return reply('this feature is only for admin')
   try {
     let who
     if (m.isGroup) who = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted.sender
@@ -770,59 +784,6 @@ case 'getbio': // Replace 'your_command_name' with the actual command name you w
     }
   }
   break; // Don't forget to add the 'break' statement at the end
-async function TiktokDownloader(Url) {
-  return new Promise(async (resolve, reject) => {
-    await axios.request({
-      url: "https://ttdownloader.com/",
-      method: "GET",
-      headers: {
-        "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
-        "accept-language": "en-US,en;q=0.9,id;q=0.8",
-        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36",
-        "cookie": "_ga=GA1.2.1240046717.1620835673; PHPSESSID=i14curq5t8omcljj1hlle52762; popCookie=1; _gid=GA1.2.1936694796.1623913934"
-      }
-    }).then(respon => {
-      const $ = cheerio.load(respon.data)
-      const token = $('#token').attr('value')
-      axios({
-        url: "https://ttdownloader.com/req/",
-        method: "POST",
-        data: new URLSearchParams(Object.entries({ url: Url, format: "", token: token })),
-        headers: {
-          "accept": "*/*",
-          "accept-language": "en-US,en;q=0.9,id;q=0.8",
-          "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
-          "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36",
-          "cookie": "_ga=GA1.2.1240046717.1620835673; PHPSESSID=i14curq5t8omcljj1hlle52762; popCookie=1; _gid=GA1.2.1936694796.1623913934"
-        }
-      }).then(res => {
-        const ch = cheerio.load(res.data)
-        const result = {
-          status: res.status,
-          result: {
-            nowatermark: ch('#results-list > div:nth-child(2)').find('div.download > a').attr('href'),
-            watermark: ch('#results-list > div:nth-child(3)').find('div.download > a').attr('href'),
-            audio: ch('#results-list > div:nth-child(4)').find(' div.download > a').attr('href')
-          }
-        }
-        resolve(result)
-      }).catch(reject)
-    }).catch(reject)
-  })
-}
-
-// Example usage:
-case 'ttdl':
-  if (!args[0]) throw `⚠️ Please provide a TikTok video URL.`;
-  const tiktokUrl = args[0];
-  TiktokDownloader(tiktokUrl)
-    .then(result => {
-      console.log(result);
-    })
-    .catch(error => {
-      console.error(error);
-    });
-  break;
 
 
 case 'lyrics': {
@@ -1479,6 +1440,8 @@ var nsfwresultx = pickRandom(botwansfw)
     break;
 
 case 'promote': {
+   if (!m.isGroup) return reply('this is only for group')
+if (!isAdmins) return reply('this feature is only for admin')
     let users = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '') + '@s.whatsapp.net';
 
     if (!users) {
@@ -1520,6 +1483,8 @@ case 'autoread': {
 
 
 case 'linkgc': {
+   if (!m.isGroup) return reply('this is only for group')
+if (!isAdmins) return reply('this feature is only for admin')
     try {
         // Generate the group invite link
         const inviteCode = await client.groupInviteCode(from);
@@ -1538,6 +1503,8 @@ case 'linkgc': {
 
 
  case 'group': {
+    if (!m.isGroup) return reply('this is only for group')
+if (!isAdmins) return reply('this feature is only for admin')
 
     if (args[0] == "off") {
         // Disable group announcements
@@ -1554,6 +1521,8 @@ case 'linkgc': {
  }
     
 case 'demote': {
+   if (!m.isGroup) return reply('this is only for group')
+if (!isAdmins) return reply('this feature is only for admin')
     try {
         // Check if it's a group chat
         // Extract the user to be demoted (from mention or quoted message)
@@ -1863,6 +1832,7 @@ case 'slap':
 case 'happy':
 case 'cuddle':
 case 'kick': {
+   if (!m.isGroup) return reply('this is only for group')
   try {
     let messsender = m.sender;
     let musers = ``;
@@ -1911,6 +1881,8 @@ break;
 
        
   case 'setnamegc': {
+     if (!m.isGroup) return reply('this is only for group')
+if (!isAdmins) return reply('this feature is only for admin')
   let value = m.quoted ? m.quoted.text : text;
   if (!value) return m.reply('example: Gss Botwa');
   if (value.length > 25) return m.reply('🚩 Text is too long, maximum 25 characters.');
@@ -1918,6 +1890,8 @@ break;
   break; // Case break statement
 }
 case 'setdesc': {
+   if (!m.isGroup) return reply('this is only for group')
+if (!isAdmins) return reply('this feature is only for admin')
   let value = m.quoted ? m.quoted.text : text;
   if (!value) return m.reply('example: Gss Botwa support group ');
   await client.groupUpdateDescription(m.chat, value);
@@ -1998,6 +1972,8 @@ case 'nowa':
     break;
 
 case 'kick': {
+   if (!m.isGroup) return reply('this is only for group')
+if (!isAdmins) return reply('this feature is only for admin')
     // Check if it's a group chat
     // Extract the user to be kicked (from mention or quoted message)
     let users = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '') + '@s.whatsapp.net';
@@ -2028,6 +2004,8 @@ case 'kick': {
 }
 
 case 'add': {
+   if (!m.isGroup) return reply('this is only for group')
+if (!isAdmins) return reply('this feature is only for admin')
   // Check if it's a group chat
 
   // Extract the user to be added (from mention, quoted message, or provided text)
@@ -2131,6 +2109,8 @@ case 'githubstalk': {
 
 
 case 'tagall':
+   if (!m.isGroup) return reply('this is only for group')
+if (!isAdmins) return reply('this feature is only for admin')
     // Fetch group metadata
     const groupMetadata = await client.groupMetadata(m.chat);
 
@@ -2156,6 +2136,48 @@ case 'tagall':
     await client.sendMessage(m.chat, finalMessage, m);
     break;
 
+case 'addowner':
+if (!args[0]) return reply(`Use ${prefix+command} number\nExample${prefix+command} ${owner}`)
+bnnd = q.split("|")[0].replace(/[^0-9]/g, '')
+let ceknye = await client.onWhatsApp(bnnd)
+if (ceknye.length == 0) return reply(`Enter A Valid And Registered Number On WhatsApp!!!`)
+owners.push(bnnd)
+fs.writeFileSync('./database/owner.json', JSON.stringify(owner))
+reply(`Number ${bnnd} Has Become An Owner!!!`)
+break
+case 'delowner':
+if (!args[0]) return reply(`Use ${prefix+command} nomor\nExample ${prefix+command} 916909137213`)
+ya = q.split("|")[0].replace(/[^0-9]/g, '')
+unp = owner.indexOf(ya)
+owner.splice(unp, 1)
+fs.writeFileSync('./database/owner.json', JSON.stringify(owner))
+reply(`The Numbrr ${ya} Has been deleted from owner list by the owner!!!`)
+break
+case 'listpremium': case 'listprem':
+teks = '*Premium List*\n\n'
+for (let client of prem) {
+teks += `- ${client}\n`
+}
+teks += `\n*Total : ${prem.length}*`
+client.sendMessage(m.chat, { text: teks.trim() }, 'extendedTextMessage', { quoted: m, contextInfo: { "mentionedJid": prem } })
+break
+case 'addprem': case 'addpremium':
+if (!args[0]) return reply(`Use ${prefix+command} number\nExample${prefix+command} 919142294xxx`)
+prrkek = q.split("|")[0].replace(/[^0-9]/g, '')+`@s.whatsapp.net`
+let ceknya = await client.onWhatsApp(prrkek)
+if (ceknya.length == 0) return reply(`Enter a valid and registered number on WhatsApp!!!`)
+.push(prrkek)
+fs.writeFileSync('./database/ium.json', JSON.stringify())
+reply(`The Number ${prrkek} Has Been ium!`)
+break
+case 'delprem': case 'delpremium':
+if (!args[0]) return reply(`Use ${prefix+command} nomor\nExample ${prefix+command} 916909137213`)
+ya = q.split("|")[0].replace(/[^0-9]/g, '')+`@s.whatsapp.net`
+unp = .indexOf(ya)
+.splice(unp, 1)
+fs.writeFileSync('./database/ium.json', JSON.stringify())
+reply(`The Number ${ya} Has Been Removed ium!`)
+break
 
 default: {  
             if (isCmd && budy.toLowerCase() != undefined) {  
