@@ -53,6 +53,7 @@ const pushname = m.pushName || "No Name"
 const botNumber = await client.decodeJid(client.user.id)
 
 const { parseMention } = require('./lib/myfunc.js');
+let argsLog;
 let ntlinkgc =JSON.parse(fs.readFileSync('./database/antilinkgc.json'));
 let nttoxic = JSON.parse(fs.readFileSync('./database/antitoxic.json'))
  
