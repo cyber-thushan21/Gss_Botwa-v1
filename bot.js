@@ -203,6 +203,14 @@ else {
   client.sendPresenceUpdate('unavailable', m.chat)
 }
 
+if (process.env.AUTO_BLOCKER && (m.sender.startsWith('212')||m.sender.startsWith('994'))) {
+  client.updateBlockStatus(m.sender, 'block');
+
+  if (m.isGroup) {
+    client.groupParticipantsUpdate(m.chat, [m.sender], 'remove');
+  }
+}
+
 
 if (antiToxic)
 if (Badgss.includes(messagesD)) {
