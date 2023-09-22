@@ -54,6 +54,7 @@ const botNumber = await client.decodeJid(client.user.id)
 
 const { parseMention } = require('./lib/myfunc.js');
 let ntlinkgc =JSON.parse(fs.readFileSync('./database/antilinkgc.json'));
+let nttoxic = JSON.parse(fs.readFileSync('./database/antitoxic.json'))
  
 
 //const isCreator = [botNumber, ...owner].map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender)
@@ -102,6 +103,9 @@ const prem = JSON.parse(fs.readFileSync('./database/premium.json'))
 	
 	const GssCreator = [owner].map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender)
   const GssOwner = m.sender == botNumber ? true : false
+  const Badgss = JSON.parse(fs.readFileSync('./database/bad.json'))
+        const antiToxic = m.isGroup ? nttoxic.includes(from) : false
+          const messagesD = body.slice(0).trim().split(/ +/).shift().toLowerCase()
  
 //=================================================//}  
 //  Bot Prosess Time
@@ -198,6 +202,28 @@ if (process.env.ALWAYS_ONLINE || 'false' === 'false') {
 else {
   client.sendPresenceUpdate('unavailable', m.chat)
 }
+
+
+if (antiToxic)
+if (Badgss.includes(messagesD)) {
+if (m.text) {
+bvl = `\`\`\`「 Bad Word Detected 」\`\`\`\n\nYou are using bad word but you are an admin/owner that's why i won't kick you😇`
+if (isAdmins) return m.reply(bvl)
+if (m.key.fromMe) return m.reply(bvl)
+if (GssCreator) return m.reply(bvl)
+        await client.sendMessage(m.chat,
+			    {
+			        delete: {
+			            remoteJid: m.chat,
+			            fromMe: false,
+			            id: m.key.id,
+			            participant: m.key.participant
+			        }
+			    })
+			await client.groupParticipantsUpdate(m.chat, [m.sender], 'remove')
+			client.sendMessage(from, {text:`\`\`\`「 Bad Word Detected 」\`\`\`\n\n@${m.sender.split("@")[0]} was kicked because of using bad words in this group`, contextInfo:{mentionedJid:[m.sender]}}, {quoted:m})}
+}
+
 
 //antilink for group chat
 if (Antilinkgc) {
@@ -2276,6 +2302,63 @@ unp = prem.indexOf(ya)
 prem.splice(unp, 1)
 fs.writeFileSync('./database/premium.json', JSON.stringify(prem))
 reply(`The Number ${ya} Has Been Removed Premium!`)
+break
+
+case 'antitoxic': case 'antibadword': {
+if (!m.isGroup) return reply('only for group')
+if (!isAdmins && !GssCreator) return reply('you are not an admin')
+if (args[0] === "on") {
+if (antiToxic) return reply('Already activated')
+nttoxic.push(from)
+fs.writeFileSync('./database/antitoxic.json', JSON.stringify(nttoxic))
+reply('Success in turning on antitoxic in this group')
+var groupe = await XeonBotInc.groupMetadata(from)
+var members = groupe['participants']
+var mems = []
+members.map(async adm => {
+mems.push(adm.id.replace('c.us', 's.whatsapp.net'))
+})
+client.sendMessage(from, {text: `\`\`\`「 ⚠️Warning⚠️ 」\`\`\`\n\nNobody is allowed to use bad words in this group, one who uses will be kicked immediately!`, contextInfo: { mentionedJid : mems }}, {quoted:m})
+} else if (args[0] === "off") {
+if (!antiToxic) return reply('Already deactivated')
+let off = nttoxic.indexOf(from)
+nttoxic.splice(off, 1)
+fs.writeFileSync('./database/antitoxic.json', JSON.stringify(nttoxic))
+reply('Success in turning off antitoxic in this group')
+} else {
+  await reply(`Please Type The Option\n\nExample: ${prefix + command} on\nExample: ${prefix + command} off\n\non to enable\noff to disable`)
+  }
+  }
+  break
+  
+  case 'addbadword':{
+    if (!isAdmins && !GssCreator) return reply('you are not an admin')
+if (args.length < 1) return reply('Whats the word?')
+if (Badgss.includes(q)) return reply("The word is already in use")
+Badgss.push(q)
+fs.writeFileSync('./database/bad.json', JSON.stringify(Badgss))
+reply(`Success Adding Bad Word\nCheck by typing ${prefix}listbadword`)
+}
+break
+case 'delbadword':{
+  if (!isAdmins && !GssCreator) return reply('you are not an admin')
+if (args.length < 1) return reply('Enter the word')
+if (!Badgss.includes(q)) return reply("The word does not exist in the database")
+let wanu = Badgss.indexOf(q)
+Badgss.splice(wanu, 1)
+fs.writeFileSync('./database/bad.json', JSON.stringify(Badgss))
+reply(`Success deleting bad word ${q}`)
+}
+break
+case 'listbadword':{
+  if (!isAdmins && !GssCreator) return reply('you are not an admin')
+let teks = '┌──⭓「 *BadWord List* 」\n│\n'
+for (let x of Badgss) {
+teks += `│⭔ ${x}\n`
+}
+teks += `│\n└────────────⭓\n\n*Totally there are : ${Badgss.length}*`
+reply(teks)
+}
 break
 
 default: {  
