@@ -2312,7 +2312,7 @@ if (antiToxic) return reply('Already activated')
 nttoxic.push(from)
 fs.writeFileSync('./database/antitoxic.json', JSON.stringify(nttoxic))
 reply('Success in turning on antitoxic in this group')
-var groupe = await XeonBotInc.groupMetadata(from)
+var groupe = await client.groupMetadata(from)
 var members = groupe['participants']
 var mems = []
 members.map(async adm => {
