@@ -1243,7 +1243,7 @@ const reactionMessage = {
   }\n*Request/Bug* : ${text}`
             teks2 = `\n\n*Hii ${pushname},You request has been forwarded to my Owners*.\n*Please wait...*`
             for (let i of owner) {
-                client.sendMessage(i + "@s.whatsapp.net", {
+                client.sendMessage(owner + "@s.whatsapp.net", {
                     text: textt + teks1,
                     mentions: [m.sender],
                 }, {
