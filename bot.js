@@ -362,6 +362,8 @@ const reactionMessage = {
 │ 🔗 - .linkgc
 │ 🕠 - closetime
 │ 🕥 - opentime
+│ ️⛓️ - Antilinkgc
+│ 🗣️ - antitoxic
 ╰◯━━━━━━━━━━━━━◯
 
 ╭◯━━━━ *Owner Menu* ━━━━━◯
@@ -373,6 +375,14 @@ const reactionMessage = {
 │ 🔁 - .autoread 🅕
 │ 🌐 - .self 🅕
 │ 🌍 - .public 🅕
+│ 🆕 - .addowner 🅕
+│ 🚮 - .delowner 🅕
+│ ➕ - .addrpem 🅕
+│ ➖ - .delprem 🅕
+│ ➕🚫 - .addbadword 🅕
+│ ➖🚫 - .delbadword 🅕
+│ 📋 - .listprem 🅕
+│ 📋🚫 - .listbadword 🅕
 ╰◯━━━━━━━━━━━━━◯
 
 ╭◯━━ *Bug Reporting* ━━◯
