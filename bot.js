@@ -478,14 +478,26 @@ case 'audio':
   let wmAudio = 'Audio downloaded by Gss_botwa';
 
   let captvidAudio = `
-┏━━━━━━━━━━━━━━━━━━━━┓
-┃ Audio by Gss_Botwa
-┃ 📝 Title: ${titleAudio}
-┃ ⏳ Duration: ${timestampAudio}
-┃ 👁️ Views: ${viewsAudio}
-┃ 📅 Upload: ${agoAudio}
-┃ 🔗 Link: ${urlAudio}
-┗━━━━━━━━━━━━━━━━━━━━┛`;
+
+╔┉───────────────┉✰
+🧚${tlang().title} 
+
+🚨 *Youtube Player* 🌿
+ ◨┉━━━━╚◭☬◮╝━━━━━┉◧
+
+╏🎀 *Title:* ${anu.title}
+
+╏🌐 *Duration:* ${anu.timestamp}
+
+╏👀 *Viewers:* ${anu.views}
+
+╏⬆️ *Uploaded:* ${anu.ago}
+
+╏👽 *Author:* ${anu.author.name}
+
+╏📡 *Url* : ${anu.url}
+*𝚂𝙷𝙴𝙽𝚄 𝚀𝚄𝙴𝙴𝙽 𝚂𝙾𝙽𝙶 𝙳𝙾𝚆𝙱𝙻𝙾𝙳 ✅*
+╚┉────────────────┉✰`;
 
   client.sendMessage(m.chat, { image: { url: thumbnailAudio }, caption: captvidAudio }, { quoted: m });
 
