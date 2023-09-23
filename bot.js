@@ -32,7 +32,7 @@ require("dotenv").config();
   const ffmpeg = require('fluent-ffmpeg');
 // Your code using fetch here
   const { MessageType, Mimetype } = require('@adiwajshing/baileys');
-const botname = "GSS Botwa";
+const botname = "SHASI-MD";
 const OWNER_NAME = "Sid bhai";
    const crypto = require('crypto');
   const fg = require('api-dylux');
@@ -82,7 +82,7 @@ const numberQuery = text.replace(new RegExp("[()+-/ +/]", "gi"), "") + "@s.whats
 const mentionByTag = m.mtype == "extendedTextMessage" && m.message.extendedTextMessage.contextInfo != null ? m.message.extendedTextMessage.contextInfo.mentionedJid : []
 const Input = mentionByTag[0] ? mentionByTag[0] : q ? numberQuery : false
 const qtod = m.quoted? "true":"false"
-const owner = "919142294671";
+const owner = "94710109956";
 
 const MODE = process.env.MODE;
 
@@ -658,7 +658,6 @@ case 'audio':
   let wmAudio = 'Audio downloaded by Gss_botwa';
 
   let captvidAudio = `
-
 ╔┉───────────────┉✰ 
 🚨 *Youtube Player* 🌿
  ◨┉━━━━╚◭☬◮╝━━━━━┉◧
