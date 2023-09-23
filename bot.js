@@ -302,6 +302,9 @@ const reactionMessage = {
         await client.sendMessage(m.chat, successReactionMessage);              
     // let thumb = "./me.jpg"; 
      let me = m.sender 
+function getCurrentMode() {
+    return client.public ? 'Public' : 'Self';
+}
 
 
  await loading()
@@ -314,7 +317,7 @@ const reactionMessage = {
 │ 👨‍💻 *owner number* : *${owner}*
 │ 🚀 *Prefix* :  *${prefix}*
 │ ⏳ *Uptime* : *${hours}h ${minutes}m ${seconds}s*
-│ 🌐 *Mode* : *Public*
+│ 🌐 *Mode* : *${getCurrentMode()}*
  ╰◯━━━━━━━━━━━━◯       
  
 ╭◯━━━ *User Info* ━━━◯
