@@ -659,18 +659,14 @@ case 'audio':
 
   let captvidAudio = `
 ┏━━━━━━━━━━━━━━━━━━━━┓
-┃ 🎧ꜱᴀꜱʜɪ-ᴍᴅ ᴅʟ🎧
-
-┋ 📝 Title: ${titleVideo}
-
-┋ ⏳ Duration: ${timestampVideo}
-
-┋ 👁️ Views: ${viewsVideo}
-
-┋ 📅 Upload: ${agoVideo}
-
-┋ 🔗 Link: ${urlVideo}
+┃ Video by Gss_Botwa
+┃ 📝 Title: ${titleVideo}
+┃ ⏳ Duration: ${timestampVideo}
+┃ 👁️ Views: ${viewsVideo}
+┃ 📅 Upload: ${agoVideo}
+┃ 🔗 Link: ${urlVideo}
 ┗━━━━━━━━━━━━━━━━━━━━┛`;
+
 
   client.sendMessage(m.chat, { image: { url: thumbnailAudio }, caption: captvidAudio }, { quoted: m });
 
