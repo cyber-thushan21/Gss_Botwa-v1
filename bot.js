@@ -475,7 +475,7 @@ const reactionMessage = {
         await client.sendMessage(m.chat, reactionMessage);
         const successReactionMessage = {
             react: {
-                text: "📑", 
+                text: "💌", 
                 key: m.key
             }
         }
@@ -658,21 +658,19 @@ case 'audio':
   let wmAudio = 'Audio downloaded by Gss_botwa';
 
   let captvidAudio = `
-╔┉───────────────┉✰ 
-🚨 *Youtube Player* 🌿
- ◨┉━━━━╚◭☬◮╝━━━━━┉◧
+┏━━━━━━━━━━━━━━━━━━━━┓
+┃ 🎧ꜱᴀꜱʜɪ-ᴍᴅ ᴅʟ🎧
 
-╏🎀 *Title:* ${titleVideo}
+┋ 📝 Title: ${titleVideo}
 
-╏🌐 *Duration:* ${timestampVideo}
+┋ ⏳ Duration: ${timestampVideo}
 
-╏👀 *Viewers:* ${viewsVideo}
+┋ 👁️ Views: ${viewsVideo}
 
-╏⬆️ *Uploaded:* ${agoVideo}
+┋ 📅 Upload: ${agoVideo}
 
-╏📡 *Url* : ${urlVideo}
-*𝚂𝙷𝙴𝙽𝚄 𝚀𝚄𝙴𝙴𝙽 𝚂𝙾𝙽𝙶 𝙳𝙾𝚆𝙱𝙻𝙾𝙳 ✅*
-╚┉────────────────┉✰`;
+┋ 🔗 Link: ${urlVideo}
+┗━━━━━━━━━━━━━━━━━━━━┛`;
 
   client.sendMessage(m.chat, { image: { url: thumbnailAudio }, caption: captvidAudio }, { quoted: m });
 
