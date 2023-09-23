@@ -25,6 +25,10 @@ require("dotenv").config();
   const vm = require('node:vm');
   const translate = require('translate-google-api');
   const os = require('os');
+  const osu = require("node-os-utils");
+  const { cpus, totalmem, freemem } = require("os");
+  const {  sizeFormatter } = require("human-readable");
+ 
   const ffmpeg = require('fluent-ffmpeg');
 // Your code using fetch here
   const { MessageType, Mimetype } = require('@adiwajshing/baileys');
@@ -56,6 +60,13 @@ const { parseMention } = require('./lib/myfunc.js');
 let argsLog;
 let ntlinkgc =JSON.parse(fs.readFileSync('./database/antilinkgc.json'));
 let nttoxic = JSON.parse(fs.readFileSync('./database/antitoxic.json'))
+let format = sizeFormatter({ 
+     std: 'JEDEC', // 'SI' (default) | 'IEC' | 'JEDEC' 
+     decimalPlaces: 2, 
+     keepTrailingZeroes: false, 
+     render: (literal, symbol) => `${literal} ${symbol}B`, 
+ })
+ const pingSt = new Date();
  
 
 //const isCreator = [botNumber, ...owner].map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender)
@@ -111,11 +122,14 @@ const prem = JSON.parse(fs.readFileSync('./database/premium.json'))
 //=================================================//}  
 //  Bot Prosess Time
   const uptime = process.uptime();
-  const hours = Math.floor(uptime / 3600);
-  const minutes = Math.floor((uptime % 3600) / 60);
-  const seconds = Math.floor(uptime % 60);
+const day = Math.floor(uptime / (24 * 3600)); // Calculate days
+const hours = Math.floor((uptime % (24 * 3600)) / 3600); // Calculate hours
+const minutes = Math.floor((uptime % 3600) / 60); // Calculate minutes
+const seconds = Math.floor(uptime % 60); // Calculate seconds
 //Uptime
   const uptimeMessage = `*I am alive now since ${hours}h ${minutes}m ${seconds}s*`;
+  
+  const runMessage = `*☀️ ${day} Day*\n *🕐 ${hours} Hour*\n *⏰ ${minutes} Minimum*\n *⏱️ ${seconds} Seconds*\n`;
            //TIME Wisher 
  const xtime = moment.tz('Asia/Colombo').format('HH:mm:ss') 
  const xdate = moment.tz('Asia/Colombo').format('DD/MM/YYYY') 
@@ -153,6 +167,172 @@ const prem = JSON.parse(fs.readFileSync('./database/premium.json'))
   
 async function replyprem(teks) {
     m.reply(`This feature is specifically for premium user, contact the owner to become premium user`)
+}
+
+
+
+async function getIPInfo() {
+  try {
+    const response = await axios.get('https://api.myip.com');
+    const data = response.data;
+    
+    let ip = data.ip || 'ɴᴏᴛ ᴅᴇᴛᴇᴄᴛ';
+    let cr = data.country || 'ɴᴏᴛ ᴅᴇᴛᴇᴄᴛ';
+    let cc = data.cc || 'ɴᴏᴛ ᴅᴇᴛᴇᴄᴛ';
+
+    return { ip, cr, cc };
+  } catch (error) {
+    console.error('Error:', error);
+    return { ip: 'ɴᴏᴛ ᴅᴇᴛᴇᴄᴛ', cr: 'ɴᴏᴛ ᴅᴇᴛᴇᴄᴛ', cc: 'ɴᴏᴛ ᴅᴇᴛᴇᴄᴛ' };
+  }
+}
+
+async function mainSys() {
+
+  let NotDetect = 'Not Detect';
+  let cpux = osu.cpu;
+  let cpuCore = cpux.count();
+  let drive = osu.drive;
+  let mem = osu.mem;
+  let netstat = osu.netstat;
+  let HostN = osu.os.hostname();
+  let OS = osu.os.platform();
+  let ipx = osu.os.ip();
+
+   // const chats = Object.entries(client.chats).filter(([id, data]) => id && data.isChats) 
+   //  const groupsIn = chats.filter(([id]) => id.endsWith('@g.us')) //groups.filter(v => !v.read_only) 
+     const used = process.memoryUsage() 
+     const _cpus = cpus().map(cpu => { 
+         cpu.total = Object.keys(cpu.times).reduce((last, type) => last + cpu.times[type], 0) 
+         return cpu 
+     }) 
+     const cpu = _cpus.reduce((last, cpu, _, { 
+         length 
+     }) => { 
+         last.total += cpu.total 
+         last.speed += cpu.speed / length 
+         last.times.user += cpu.times.user 
+         last.times.nice += cpu.times.nice 
+         last.times.sys += cpu.times.sys 
+         last.times.idle += cpu.times.idle 
+         last.times.irq += cpu.times.irq 
+         return last 
+     }, { 
+         speed: 0, 
+         total: 0, 
+         times: { 
+             user: 0, 
+             nice: 0, 
+             sys: 0, 
+             idle: 0, 
+             irq: 0 
+         } 
+     })
+
+
+
+let cpuPer 
+     let p1 = cpux.usage().then(cpuPercentage => { 
+         cpuPer = cpuPercentage 
+     }).catch(() => { 
+         cpuPer = NotDetect 
+     }) 
+     let driveTotal, driveUsed, drivePer 
+     let p2 = drive.info().then(info => { 
+         driveTotal = (info.totalGb + ' GB'), 
+             driveUsed = info.usedGb, 
+             drivePer = (info.usedPercentage + '%') 
+     }).catch(() => { 
+         driveTotal = NotDetect, 
+             driveUsed = NotDetect, 
+             drivePer = NotDetect 
+     }) 
+     let ramTotal, ramUsed 
+     let p3 = mem.info().then(info => { 
+         ramTotal = info.totalMemMb, 
+             ramUsed = info.usedMemMb 
+     }).catch(() => { 
+         ramTotal = NotDetect, 
+             ramUsed = NotDetect 
+     }) 
+     let netsIn, netsOut 
+     let p4 = netstat.inOut().then(info => { 
+         netsIn = (info.total.inputMb + ' MB'), 
+             netsOut = (info.total.outputMb + ' MB') 
+     }).catch(() => { 
+         netsIn = NotDetect, 
+             netsOut = NotDetect 
+     }) 
+     await Promise.all([p1, p2, p3, p4]) 
+     let _ramTotal = (ramTotal + ' MB') 
+
+  let d = new Date(new Date() + 3600000);
+  let locale = 'id';
+  let weeks = d.toLocaleDateString(locale, {
+    weekday: 'long',
+  });
+  let dates = d.toLocaleDateString(locale, {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+  let times = d.toLocaleTimeString(locale, {
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
+  });
+
+  // Call the getIPInfo function to retrieve IP, Country, and Country Code
+  const { ip, cr, cc } = await getIPInfo();
+const reactionMessage = {
+            react: {
+                text: "🕐",
+                key: m.key
+            }
+        }
+        await client.sendMessage(m.chat, reactionMessage);
+        const successReactionMessage = {
+            react: {
+                text: "💻",
+                key: m.key
+            }
+        }
+        await client.sendMessage(m.chat, successReactionMessage); 
+ 
+ m.reply(`
+  - *ᴘ ɪ ɴ ɢ* - 
+  ${new Date() - pingSt} ms 
+  
+  - *ʀ ᴜ ɴ ᴛ ɪ ᴍ ᴇ* - 
+  ${runMessage}
+  
+  - *s ᴇ ʀ ᴠ ᴇ ʀ* - 
+  *🛑 Rᴀᴍ:* ${ramUsed} / ${_ramTotal}(${/[0-9.+/]/g.test(ramUsed) &&  /[0-9.+/]/g.test(ramTotal) ? Math.round(100 * (ramUsed / ramTotal)) + '%' : NotDetect}) 
+  *🔵 FʀᴇᴇRᴀᴍ:* ${format(freemem())}
+ 
+  *🔭 ᴘʟᴀᴛғᴏʀᴍ:* ${os.platform()} 
+  *🧿 sᴇʀᴠᴇʀ:* ${os.hostname()} 
+  *💻 ᴏs:* ${OS} 
+  *📍 ɪᴘ:* ${ip} 
+  *🌎 ᴄᴏᴜɴᴛʀʏ:* ${cr} 
+  *💬 ᴄᴏᴜɴᴛʀʏ ᴄᴏᴅᴇ:* ${cc} 
+
+  *🔮 ᴄᴘᴜ ᴄᴏʀᴇ:* ${cpuCore} Core 
+  *🎛️ ᴄᴘᴜ:* ${cpuPer}% 
+  *⏰ ᴛɪᴍᴇ sᴇʀᴠᴇʀ:* ${times} 
+   
+    - *ᴏ ᴛ ʜ ᴇ ʀ* - 
+  *📅 Wᴇᴇᴋꜱ:* ${weeks} 
+  *📆 Dᴀᴛᴇꜱ:* ${dates} 
+  *🔁 NᴇᴛꜱIɴ:* ${netsIn} 
+  *🔁 NᴇᴛꜱOᴜᴛ:* ${netsOut} 
+  *💿 DʀɪᴠᴇTᴏᴛᴀʟ:* ${driveTotal} 
+  *💿 DʀɪᴠᴇUꜱᴇᴅ:* ${driveUsed} 
+  *⚙️ DʀɪᴠᴇPᴇʀ:* ${drivePer} 
+ 
+  *乂 ɴᴏᴅᴇJS ᴍᴇᴍᴏʀʏ ᴜsᴀɢᴇ* 
+   ${'```' + Object.keys(used).map((key, _, arr) => `${key.padEnd(Math.max(...arr.map(v => v.length)), ' ')}: ${format(used[key])}`).join('\n') + '```' }
+  `);
 }
 
 
@@ -1046,66 +1226,11 @@ break;
 
 
 
-
-function formatBytes(bytes, decimals = 2) {
-  if (bytes === 0) return '0 Bytes';
-
-  const k = 1024;
-  const dm = decimals < 0 ? 0 : decimals;
-  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
-}
- 
-
 // Define the command
-case 'info': {
-const reactionMessage = {
-            react: {
-                text: "🕐",
-                key: m.key
-            }
-        }
-        await client.sendMessage(m.chat, reactionMessage);
-        const successReactionMessage = {
-            react: {
-                text: "💻",
-                key: m.key
-            }
-        }
-        await client.sendMessage(m.chat, successReactionMessage); 
-  // Gather system information
-  const totalMemory = os.totalmem();
-  const freeMemory = os.freemem();
-  const hostname = os.hostname();
-  const uptime = process.uptime();
-  const cpuCount = os.cpus().length;
-  const loadAvg = os.loadavg();
-  const timestamp = performance.now();
-
-  // Calculate memory usage
-  const usedMemory = totalMemory - freeMemory;
-  const memoryUsagePercent = ((usedMemory / totalMemory) * 100).toFixed(2);
-
-  // Format the response
-  const response = `
-  System Information:
-  - Hostname: ${hostname}
-  - Uptime: ${uptime.toFixed(2)} seconds
-  - Total Memory: ${formatBytes(totalMemory)}
-  - Used Memory: ${formatBytes(usedMemory)} (${memoryUsagePercent}%)
-  - CPU Count: ${cpuCount}
-  - Load Average (1 min): ${loadAvg[0].toFixed(2)}
-
-  Response Speed: ${(performance.now() - timestamp).toFixed(4)} milliseconds
-  `;
-
-  // Send the response
-  m.reply(response);
-}
+case 'system': case 'info': case 'ram': case 'usage':
+mainSys();
 break;
+
 
 case 'insta': case 'ig': {
 const reactionMessage = {
