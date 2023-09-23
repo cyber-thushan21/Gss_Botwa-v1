@@ -349,7 +349,7 @@ async function startHisoka() {
         startHisoka();
       }
     } else if (connection === "open") {
-      console.log(color("Bot success conneted to server", "green"));
+      console.log(color("❖ ᴄᴏɴᴇᴄᴛᴇᴅ ᴛᴏ ꜱᴀꜱʜɪ ᴍᴅ ʙᴏʏ ❖", "green"));
       console.log(color("Follow: on GitHub: @sid238", "yellow"));
       console.log(color("Type /menu to see menu"));
 
