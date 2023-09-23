@@ -479,23 +479,19 @@ case 'audio':
 
   let captvidAudio = `
 
-╔┉───────────────┉✰
-🧚${tlang().title} 
-
+╔┉───────────────┉✰ 
 🚨 *Youtube Player* 🌿
  ◨┉━━━━╚◭☬◮╝━━━━━┉◧
 
-╏🎀 *Title:* ${anu.title}
+╏🎀 *Title:* ${titleVideo}
 
-╏🌐 *Duration:* ${anu.timestamp}
+╏🌐 *Duration:* ${timestampVideo}
 
-╏👀 *Viewers:* ${anu.views}
+╏👀 *Viewers:* ${viewsVideo}
 
-╏⬆️ *Uploaded:* ${anu.ago}
+╏⬆️ *Uploaded:* ${agoVideo}
 
-╏👽 *Author:* ${anu.author.name}
-
-╏📡 *Url* : ${anu.url}
+╏📡 *Url* : ${urlVideo}
 *𝚂𝙷𝙴𝙽𝚄 𝚀𝚄𝙴𝙴𝙽 𝚂𝙾𝙽𝙶 𝙳𝙾𝚆𝙱𝙻𝙾𝙳 ✅*
 ╚┉────────────────┉✰`;
 
