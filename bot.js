@@ -492,7 +492,7 @@ function getCurrentMode() {
    Hi 👋 *${pushname}*
    
 ╭◯━━━  *Bot Info* ━━━◯
-│ 🤖 *Bot Name* : *GSS_BOTWA*
+│ 🤖 *Bot Name* : *SASHI-MD*
 │ 👤 *Owner Name* : *${OWNER_NAME}*
 │ 👨‍💻 *owner number* : *${owner}*
 │ 🚀 *Prefix* :  *${prefix}*
