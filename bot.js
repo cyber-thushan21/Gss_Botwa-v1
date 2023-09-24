@@ -82,13 +82,13 @@ const numberQuery = text.replace(new RegExp("[()+-/ +/]", "gi"), "") + "@s.whats
 const mentionByTag = m.mtype == "extendedTextMessage" && m.message.extendedTextMessage.contextInfo != null ? m.message.extendedTextMessage.contextInfo.mentionedJid : []
 const Input = mentionByTag[0] ? mentionByTag[0] : q ? numberQuery : false
 const qtod = m.quoted? "true":"false"
-const owner = "919142294671";
+const owner = "94710109956";
 
 const MODE = process.env.MODE;
 
 //const thinking = await client.sendMessage(m.chat, { text: 'Thinking...' }); 
-const BOT_NAME = process.env.BOT_NAME || 'GSS Botwa'
-const OWNER_NAME = process.env.OWNER_NAME || 'Goutam'
+const BOT_NAME = process.env.BOT_NAME || 'HASI-MD'
+const OWNER_NAME = process.env.OWNER_NAME || 'THUSHAN'
 const APIKEY = process.env.APIKEY;
 const mentionUser = [...new Set([...(m.mentionedJid || []), ...(m.quoted ? [m.quoted.sender] : [])])]
 
@@ -127,7 +127,7 @@ const hours = Math.floor((uptime % (24 * 3600)) / 3600); // Calculate hours
 const minutes = Math.floor((uptime % 3600) / 60); // Calculate minutes
 const seconds = Math.floor(uptime % 60); // Calculate seconds
 //Uptime
-  const uptimeMessage = `*I am alive now since ${hours}h ${minutes}m ${seconds}s*`;
+  const uptimeMessage = `*HELLOW I AM SHASHI MD  ${hours}h ${minutes}m ${seconds}s*`;
   
   const runMessage = `*☀️ ${day} Day*\n *🕐 ${hours} Hour*\n *⏰ ${minutes} Minimum*\n *⏱️ ${seconds} Seconds*\n`;
            //TIME Wisher 
@@ -475,7 +475,7 @@ const reactionMessage = {
         await client.sendMessage(m.chat, reactionMessage);
         const successReactionMessage = {
             react: {
-                text: "📑", 
+                text: "🧚", 
                 key: m.key
             }
         }
